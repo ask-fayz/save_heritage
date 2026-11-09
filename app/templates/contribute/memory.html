@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% import "partials/macros.html" as m with context %}
+{% block title %}Share a memory of {{ site.title }} · SAVE Heritage{% endblock %}
+
+{% block content %}
+<section class="narrow" style="padding-top: 56px;">
+  <p><a href="/site/{{ site.slug }}#memories">← {{ site.title }}</a></p>
+  <h1 style="font-size: clamp(2rem, 5vw, 2.8rem); margin: 8px 0 12px;">Share a memory</h1>
+  <p class="muted">Did you perform here, watch a show, live next door, or keep a family photo? Write in any language:
+    {% if ai_enabled %}we transcribe and translate it with AI, and{% endif %} a curator checks it before it appears on the site.</p>
+
+  {% if error %}<div class="alert alert-error" role="alert">{{ error }}</div>{% endif %}
+
+  <form class="panel" method="post" action="/site/{{ site.slug }}/memories" enctype="multipart/form-data" data-memory-form>
+    {{ m.csrf() }}
+    <fieldset class="field" style="border: 0; padding: 0; margin: 0 0 18px;">
+      <legend style="font-weight: 600; font-size: .9rem; margin-bottom: 8px;">What are you sharing?</legend>
+      <div class="segmented">
+        {% set kind = form.kind or 'story' %}
+        <label><input type="radio" name="kind" value="story" {% if kind == 'story' %}checked{% endif %}><span>A story</span></label>
+        <label><input type="radio" name="kind" value="photo" {% if kind == 'photo' %}checked{% endif %}><span>A photo</span></label>
+        <label><input type="radio" name="kind" value="audio" {% if kind == 'audio' %}checked{% endif %}><span>My voice</span></label>
+      </div>
+    </fieldset>
+
+    <div class="field" data-for="photo">
+      <label for="photo-file">Photo</label>
+      <input id="photo-file" type="file" accept="image/jpeg,image/png,image/webp" data-file="photo">
+      <p class="hint">JPEG, PNG or WebP up to {{ request.app.state.settings.max_photo_mb }} MB. Only share photos you took or that belong to your family.</p>
+    </div>
+
+    <div class="field" data-for="audio">
+      <label>Voice recording</label>
+      <div class="row">
+        <button class="btn btn-accent btn-sm" type="button" data-record>● Record</button>
+        <span class="small muted" data-record-status>Up to 5 minutes. Speak in any language.</span>
+      </div>
+      <audio controls data-record-preview hidden style="width: 100%; margin-top: 10px;"></audio>
+      <p class="hint">Or upload a file: <input type="file" accept="audio/*" data-file="audio" aria-label="Audio file"></p>
+    </div>
+
+    <input type="file" name="file" hidden data-real-file>
+
+    <div class="field">
+      <label for="text" data-text-label>Your story</label>
+      <textarea id="text" name="text" maxlength="8000" placeholder="When were you here? What did you see, hear, feel? Who was with you?">{{ form.text or '' }}</textarea>
+      <p class="hint" data-text-hint>Please avoid other people's phone numbers, addresses or other private details.</p>
+    </div>
+
+    <div class="grid-2" style="gap: 14px;">
+      <div class="field">
+        <label for="year">Year it refers to <span class="muted">(optional)</span></label>
+        <input id="year" type="number" name="year" min="1800" max="2100" inputmode="numeric" placeholder="e.g. 1985" value="{{ form.year or '' }}">
+      </div>
+      <div class="field">
+        <label for="author_name">Your name <span class="muted">(optional, shown publicly)</span></label>
+        <input id="author_name" type="text" name="author_name" maxlength="120" value="{{ form.author_name or '' }}" autocomplete="name">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="license">How may others use it?</label>
+      <select id="license" name="license">
+        {% for value, label in licenses.items() %}<option value="{{ value }}" {% if (form.license or 'CC BY 4.0') == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="check"><input type="checkbox" name="consent" value="yes" required>
+        <span>This is my own memory or material, and I agree that SAVE Heritage may publish it after review under the licence above.</span></label>
+    </div>
+
+    <button class="btn btn-accent" type="submit">Send for review</button>
+  </form>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/memory-form.js?v={{ static_version }}" defer></script>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Thank you · SAVE Heritage{% endblock %}
+
+{% block content %}
+<section class="narrow" style="padding: 90px 0 20px; text-align: center;">
+  <p class="muted">{{ site.title }}</p>
+  <h1 style="font-size: clamp(2.2rem, 5vw, 3rem); margin-bottom: 16px;">Thank you</h1>
+  <p style="font-size: 1.1rem;">
+    {% if what == 'memory' %}Your memory is with our curators.{% if ai_enabled %} We are transcribing and translating it now.{% endif %}
+    {% elif what == 'scan' %}Your scan is waiting for review.
+    {% elif what == 'alignment' %}Your alignment is waiting for review. Once approved, everyone can open this photo as a window to the past.
+    {% else %}Your recording is waiting for review.{% endif %}
+    It will appear on the page once approved.
+  </p>
+  <p class="row" style="justify-content: center; margin-top: 28px;">
+    <a class="btn btn-accent" href="/site/{{ site.slug }}">Back to {{ site.title }}</a>
+    <a class="btn btn-outline" href="/archive">Explore the archive</a>
+  </p>
+</section>
+{% endblock %}

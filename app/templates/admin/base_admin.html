@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Curators · SAVE Heritage{% endblock %}
+{% block nav %}
+<a href="/admin" {% if request.url.path == '/admin' %}aria-current="page"{% endif %}>Dashboard</a>
+<a href="/admin/moderation" {% if request.url.path == '/admin/moderation' %}aria-current="page"{% endif %}>Moderation</a>
+<a href="/admin/news" {% if request.url.path == '/admin/news' %}aria-current="page"{% endif %}>News</a>
+<a href="/archive">Public site</a>
+{% endblock %}

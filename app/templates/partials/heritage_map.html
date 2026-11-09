@@ -1,0 +1,21 @@
+<div class="heritage-globe" data-globe>
+  <div class="globe-toolbar">
+    <div class="map-filters" role="group" aria-label="{{ t('globe_filter') }}">
+      {% for value,key in [('all','all'),('endangered','at_risk'),('stable','stable'),('lost','lost')] %}<button type="button" class="map-filter-btn" aria-pressed="{{ 'true' if value == 'all' else 'false' }}" data-map-filter="{{ value }}">{{ t(key) }}</button>{% endfor %}
+    </div>
+    <p class="small muted">{{ t('globe_hint') }}</p>
+  </div>
+  <div class="globe-stage">
+    <canvas id="heritage-map" tabindex="0" role="img" aria-label="{{ t('globe_hint') }}"></canvas>
+    <div class="globe-zoom"><button type="button" data-globe-zoom="1.2" aria-label="{{ t('zoom_in') }}">+</button><button type="button" data-globe-zoom="0.833333" aria-label="{{ t('zoom_out') }}">−</button><button type="button" data-globe-reset aria-label="{{ t('reset_globe') }}">↺</button></div>
+    <div class="globe-card" data-globe-card hidden><strong data-globe-title></strong><p data-globe-location></p><a data-globe-link class="btn btn-accent btn-sm">{{ t('open') }} →</a></div>
+    <span class="globe-credit">Natural Earth · D3</span>
+  </div>
+  <p data-globe-error class="small" role="status" hidden>{{ t('globe_error') }}</p>
+  <div class="globe-places" aria-label="{{ t('archive') }}">{% for site in map_sites %}<button type="button" data-globe-site="{{ loop.index0 }}">{{ site.title }}</button>{% endfor %}</div>
+  <noscript><ul>{% for site in map_sites %}<li><a href="/site/{{ site.slug }}?lang={{ lang }}">{{ site.title }}</a></li>{% endfor %}</ul></noscript>
+</div>
+<script id="heritage-map-data" type="application/json">{{ (map_sites or []) | tojson }}</script>
+<script src="/static/vendor/d3.min.js" defer></script>
+<script src="/static/vendor/topojson-client.min.js" defer></script>
+<script src="/static/js/heritage-map.js?v={{ static_version }}" defer></script>

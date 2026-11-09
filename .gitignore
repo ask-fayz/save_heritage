@@ -1,0 +1,18 @@
+# Local configuration and secrets
+.env
+
+# Runtime data: SQLite database and uploaded files
+data/
+archive_data.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/

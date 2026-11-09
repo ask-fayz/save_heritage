@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% import "partials/macros.html" as m with context %}
+{% block title %}{{ t('choose') }} · Safe Heritage{% endblock %}
+{% block content %}
+<section class="container search-results">
+  <a href="/?lang={{ lang }}">← {{ t('back') }}</a>
+  <h1>{{ t('choose') }}</h1><p class="lede">{{ query }}</p><p>{{ t('choose_hint') }}</p>
+  {% if search_error %}<p class="alert alert-error" role="alert">{{ search_error }}</p>{% endif %}
+  <div class="grid-2">
+  {% for candidate in candidates %}
+  <article class="info-card"><h2>{{ candidate.label }}</h2><p>{{ candidate.description }}</p>
+    <p class="small"><a href="{{ candidate.url }}" target="_blank" rel="noopener">Wikipedia · {{ candidate.qid }} ↗</a></p>
+    <form action="/generate?lang={{ lang }}" method="post">{{ m.csrf() }}
+      <input type="hidden" name="url" value="{{ candidate.url }}"><input type="hidden" name="lang" value="{{ lang }}">
+      <button class="btn btn-accent" type="submit">{{ t('create') }} →</button>
+    </form>
+  </article>
+  {% else %}{% if not search_error %}<p>{{ t('no_results') }}</p>{% endif %}{% endfor %}
+  </div>
+</section>
+{% endblock %}

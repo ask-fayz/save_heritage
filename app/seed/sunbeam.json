@@ -1,0 +1,595 @@
+{
+  "site": {
+    "slug": "sunbeam",
+    "wikidata_qid": "Q2113185",
+    "source_url": "https://en.wikipedia.org/wiki/Sunbeam_Theatre",
+    "title": "Sunbeam Theatre",
+    "native_name": "新光戲院",
+    "location_label": "North Point, Hong Kong",
+    "tagline": "A home of Cantonese opera on King's Road since 1972. Closed in 2025, its story now lives on in a new venue, a revitalisation plan and the memories of its audiences.",
+    "latitude": 22.2913,
+    "longitude": 114.2,
+    "coord_source": "wikidata",
+    "facts": {
+      "qid": "Q2113185",
+      "label": "Sunbeam Theatre",
+      "native_label": "新光戲院",
+      "opening_year": 1972,
+      "address": "423 King's Road, Hong Kong",
+      "commons_category": "Sunbeam Theatre",
+      "instance_of": [
+        "theatre building",
+        "opera house",
+        "movie theater"
+      ],
+      "located_in": [
+        "Eastern District"
+      ],
+      "country": [
+        "People's Republic of China"
+      ],
+      "image": "HK SunBeamTheatre 2008.JPG"
+    },
+    "content": {
+      "tour_cards": [
+        {
+          "title": "A landmark on King's Road",
+          "content": "Sunbeam Theatre (新光戲院) stands at 423 King's Road in North Point, near the corner of Shu Kuk Street. For more than half a century it was one of the best-known homes of Cantonese opera in Hong Kong.",
+          "source_refs": [
+            1,
+            2
+          ],
+          "camera": {
+            "heading": 20,
+            "pitch": -35,
+            "range": 420
+          }
+        },
+        {
+          "title": "Built by a migrant community",
+          "content": "In the 1950s many emigrants from Shanghai settled in North Point and opened businesses there. Sunbeam was one of the landmark theatres started by that community; Hua Chang Enterprises Ltd established it in 1972.",
+          "source_refs": [
+            1
+          ],
+          "camera": {
+            "heading": 110,
+            "pitch": -25,
+            "range": 260
+          }
+        },
+        {
+          "title": "Two auditoriums under one roof",
+          "content": "In 1989 the hall was divided in two: the former balcony became a small cinema and the stalls a large stage for live performance. In March 2007 the smaller auditorium was rebuilt as a multi-purpose theatre.",
+          "source_refs": [
+            1
+          ],
+          "camera": {
+            "heading": 200,
+            "pitch": -45,
+            "range": 180
+          }
+        },
+        {
+          "title": "The Grand Palace for Cantonese Opera",
+          "content": "Sunbeam's reputation was built on full houses. In 1993 the Chung Sun Sing Opera Troupe played 38 consecutive sold-out shows here, earning the theatre the title \"Hong Kong's Grand Palace for Cantonese Opera\".",
+          "source_refs": [
+            1
+          ],
+          "camera": {
+            "heading": 290,
+            "pitch": -30,
+            "range": 320
+          }
+        },
+        {
+          "title": "Sold, closed and waiting",
+          "content": "The building was put up for sale in 2023 and bought by Island Evangelical Community Church. The theatre closed on 3 March 2025 for renovation; the church plans a multi-purpose space where booked performances can return, expected in early 2028. The Sunbeam opera operation reopened in Whampoa in August 2025.",
+          "source_refs": [
+            1,
+            5,
+            6,
+            8
+          ],
+          "camera": {
+            "heading": 340,
+            "pitch": -55,
+            "range": 500
+          }
+        }
+      ],
+      "culture_title": "Cantonese Opera",
+      "culture_subtitle": "粵劇",
+      "culture_cards": [
+        {
+          "title": "Cantonese words, Chinese stagecraft",
+          "content": "Yueju, or Cantonese opera, combines Mandarin operatic traditions with the Cantonese dialect. Rooted in Guangdong and Guangxi, it is a cultural bond for Cantonese speakers in China and around the world.",
+          "source_refs": [
+            3
+          ]
+        },
+        {
+          "title": "Strings, percussion and painted faces",
+          "content": "Performances are driven by a combination of string and percussion instruments and are known for elaborate costumes and face painting.",
+          "source_refs": [
+            3
+          ]
+        },
+        {
+          "title": "Singing and fighting",
+          "content": "The form incorporates stunts and fights with real weapons drawing on Shaolin martial arts. Its central Wenwusheng role demands mastery of both singing and fighting.",
+          "source_refs": [
+            3
+          ]
+        },
+        {
+          "title": "A tradition that needs stages",
+          "content": "Cantonese opera was inscribed on UNESCO's Representative List in 2009 and is passed on through drama schools and apprenticeships. The loss of venues such as Sunbeam has sharpened concerns about closures and talent gaps.",
+          "source_refs": [
+            3,
+            11
+          ]
+        }
+      ],
+      "quick_facts": [
+        {
+          "text": "Opened in 1972",
+          "source_refs": [
+            1,
+            2
+          ]
+        },
+        {
+          "text": "Address: 423 King's Road, North Point, Hong Kong",
+          "source_refs": [
+            1,
+            2
+          ]
+        },
+        {
+          "text": "Split into two auditoriums in 1989",
+          "source_refs": [
+            1
+          ]
+        },
+        {
+          "text": "North Point venue closed on 3 March 2025",
+          "source_refs": [
+            1,
+            6
+          ]
+        },
+        {
+          "text": "Opera operation reopened in Whampoa in August 2025",
+          "source_refs": [
+            8
+          ]
+        },
+        {
+          "text": "Cantonese opera: UNESCO Intangible Cultural Heritage since 2009",
+          "source_refs": [
+            3
+          ]
+        }
+      ],
+      "did_you_know": {
+        "text": "When the lease ran out in 2009, public debate kept the theatre open for three more years, and the Government planned a HK$100,000 monthly rent subsidy through the Arts Development Council.",
+        "source_refs": [
+          1
+        ]
+      },
+      "glossary": [
+        {
+          "term": "Yueju",
+          "original": "粵劇",
+          "definition": "Cantonese opera: Chinese operatic tradition performed in the Cantonese dialect.",
+          "source_refs": [
+            3
+          ]
+        },
+        {
+          "term": "Wenwusheng",
+          "original": "文武生",
+          "definition": "The central male role, which requires proficiency in both singing and fighting.",
+          "source_refs": [
+            3
+          ]
+        },
+        {
+          "term": "Shengongxi",
+          "original": "神功戲",
+          "definition": "Opera performed together with ceremonial, religious and sacrificial elements in some rural communities.",
+          "source_refs": [
+            3
+          ]
+        },
+        {
+          "term": "Face painting",
+          "original": "臉譜",
+          "definition": "Painted make-up that forms part of the elaborate visual language of the opera.",
+          "source_refs": [
+            3
+          ]
+        }
+      ],
+      "practitioners": [
+        {
+          "name": "Hung Sin-nui",
+          "role": "Cantonese opera star",
+          "description": "Fans gathered for a memorial to the late star at Sunbeam Theatre in December 2013.",
+          "source_refs": [
+            9
+          ]
+        },
+        {
+          "name": "Li Kui-ming",
+          "role": "Opera playwright and operator",
+          "description": "Agreed a HK$1 million monthly rent with the landlord in 2012, allowing the building to remain an opera theatre.",
+          "source_refs": [
+            1
+          ]
+        },
+        {
+          "name": "Chung Sun Sing Opera Troupe",
+          "role": "Opera troupe",
+          "description": "Played 38 consecutive full-house shows at Sunbeam in 1993.",
+          "source_refs": [
+            1
+          ]
+        }
+      ],
+      "disputed_points": [
+        {
+          "topic": "Sale price of the theatre premises",
+          "versions": [
+            {
+              "claim": "Reported sale for about US$128 million (November 2023).",
+              "source_refs": [
+                10
+              ]
+            },
+            {
+              "claim": "Bought by Island Evangelical Community Church for HK$750 million.",
+              "source_refs": [
+                1,
+                5
+              ]
+            }
+          ]
+        }
+      ],
+      "protection_level": "UNESCO Intangible Cultural Heritage (Yueju Opera, 2009)",
+      "preservation_actions": [
+        {
+          "title": "Document the North Point hall before renovation",
+          "content": "Share photographs, ticket stubs, voice memories and videos of the original 423 King's Road auditorium so the community record remains complete during the 2025–2028 conversion.",
+          "source_refs": [
+            1,
+            6
+          ]
+        },
+        {
+          "title": "Support live Cantonese opera stages",
+          "content": "Attend performances at the reopened Whampoa venue and local troupes such as Chung Sun Sing to sustain practitioners and apprentices.",
+          "source_refs": [
+            3,
+            8,
+            11
+          ]
+        }
+      ]
+    },
+    "theme": {
+      "bg": "#1A0A0A",
+      "bg_darker": "#0D0505",
+      "accent_red": "#C8102E",
+      "accent_gold": "#D4A843",
+      "text_cream": "#F0EAD6",
+      "card_bg": "#2A1010",
+      "border_color": "#3D1515"
+    },
+    "risk_status": "critical",
+    "risk_reasons": [
+      "ownership"
+    ],
+    "risk_summary": "The North Point theatre closed on 3 March 2025 after its premises were sold to a church, which plans a multi-purpose space with bookable performances by early 2028. The opera operation moved to Whampoa in August 2025, but the original hall's future as a Cantonese opera stage is uncertain.",
+    "risk_source_refs": [
+      1,
+      6,
+      8
+    ],
+    "generation_mode": "manual"
+  },
+  "sources": [
+    {
+      "ref": 1,
+      "kind": "wikipedia",
+      "title": "Wikipedia (en): Sunbeam Theatre",
+      "url": "https://en.wikipedia.org/wiki/Sunbeam_Theatre",
+      "language": "en"
+    },
+    {
+      "ref": 2,
+      "kind": "wikidata",
+      "title": "Wikidata Q2113185",
+      "url": "https://www.wikidata.org/wiki/Q2113185"
+    },
+    {
+      "ref": 3,
+      "kind": "web",
+      "title": "UNESCO Intangible Cultural Heritage: Yueju opera",
+      "url": "https://ich.unesco.org/en/RL/yueju-opera-00203",
+      "language": "en"
+    },
+    {
+      "ref": 4,
+      "kind": "news",
+      "title": "South China Morning Post, 7 Sep 2024: Curtain call for private Cantonese opera venue in Hong Kong as lease set to expire",
+      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxOTFpVaFNLdVVGLTlJZGh1UTdFRHVzczUzRGxVZVoyaXVuNFBiS2Z2UlkzRjZNT3dUTFRpZGtVWTNiODJMMG1SVlZhNVNtcjJkY1BTTkdweXNaMXNFZDNRUE1nOG5GQ21iRzlmX1VnREtmYTBBQjJKVWJCQUozbTl2cXNXazFLWU1OckViQ3NnVHBrWGtYODdCTHV0bFNibG1BU0l6S2FmY2JsQjBCLXh0eUpSZjFFcmVLX3dTRGsyYmd4YVFZU1duVk5aQjRuX29WVndkbNIB1AFBVV95cUxNZmsxMVIyUnMxSVNDZVl5bWxsaWg0V2gzeWVUa2ZYSTh0cXBadnVJVEdxQzJxOHRTSzFDWEFSOW0wWGx1YVNnNS04b0pTSVZTd1prZUxSVjV2b0Vhcnh1V3F6a0VNU21odW45UVI0MFZrR2JOVnpHVEdJZHRMUnpnekdpUTB1U0loSVktd0tpNXBRdE1RNjVGblFlRlNMWDVpZzhrUWR0aVFBQ2pwNGoxeTZyV1RWZFhHU0tseWNkcm82c2xXRWNrLWo5SXpJR3VNNDE0MA?oc=5",
+      "language": "en"
+    },
+    {
+      "ref": 5,
+      "kind": "news",
+      "title": "Hong Kong Free Press, 5 Feb 2024: Island ECC church buying North Point’s historic Sunbeam Theatre for HK$750m",
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPQ0VpaWpraExjUkRyQ0NHeXpGbVZ0TVVLcmMtQ3N5UVpleUlzdFhmYnBoWDRyLTYxTVhRb1hISm9lNWJ3bzZqeEJGRzdqWHFRR1h2QS1YakJmTHdJYkYtQkpSdzVFenNpWVRfVTlOSzNxX2pXNGxYRU5tRWJwMVNnWndjRC04MGVkblc2TEt1cXpTaXdQNWt2UDRnTEVDaEkwM0lUV1h3QXI0cUdGQ19xU0U1cUg5Vkp1bFZvb2kxNA?oc=5",
+      "language": "en"
+    },
+    {
+      "ref": 6,
+      "kind": "news",
+      "title": "South China Morning Post, 3 Mar 2025: Crowds swell as Hong Kong’s Sunbeam Theatre turns off lights after 52 years",
+      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOUXBEZVJmbkRRUGV1bjRHTjYwOGdPaW9TSWlQeEdwNXVtY1NkN2piZ0FBeTg0VUV5UjgwTU1QLWRwaVFzVTlpZVFkdk1RRGZZMGRuUTUyMDdrVUktMXhNNmc3S2NyeU9WREtBZ2FtengwYUZDNzNUeWZDYTFYaFlqQU42WlFmUEotNVhGTXNva0NZUHhjQjFPVVdmRm5LVzAzMG84TXdnTFZCVEU1RnVFMXhDd1hrLS1qSlZzRF9aSXVvaC1UVDI5b2dR0gHKAUFVX3lxTE1ZT1dQTTJueE5qQU5HQUxodmpiUEt5ZDdlQ0I0LW1aUzd6akc5REhKMmpCM3FjOVJjbDNtal96Rm9fNzYyclNpclBNTGh1QXllVUpaOHdQRFNKTy1hQUZILXkxUy1ySXVVRmFrNEloOGFkR0NBdHRKRHRkcDh3SUxHQlFTSEl5cGtmSk9TTXFzX21waVBpdGtFWmpVRTRnRmFxeVJKbU16MmJHNVVaNnBzNnU0bWFxejNpTHJhMGFqS0M1SmZ5ZU9UUWc?oc=5",
+      "language": "en"
+    },
+    {
+      "ref": 7,
+      "kind": "news",
+      "title": "South China Morning Post, 15 Apr 2025: Hong Kong’s Sunbeam Theatre finds new home, set to reopen as soon as mid-June",
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPTlJkMkhmRHRSUVdlNW03Zjc2WmlseUFSTDI0S2MybHR4YUE3Z0lTTEFJMWhrZC1oUE9semhSZHdQT0s3ZmlyeVpvYkZhMndZMjRaTUxDbUlBODAzY0w0akNyZFFEX1lfVGtNcFJFRFRzNGR0c0F3NEtVaTI1bTRoYmNDTzh6OHl4by1qNlJxTU5iRm9UQWVoRy1TVTlOZWlWT3RxN3owWjU3MkQyX083UjhVSExMMjBJTkRwTFFaRkNwdXNt0gHEAUFVX3lxTFBtOFhwZS1yMWoxTzFzenlpYXNDaDdkQ1gwUUlaajhjclIyQkZIVlI0dzRLSUNwS0ZRYzE4QW5KeGRzOFNsaEtTSThWeVlmTTdFOFRCaU5RZll4am1aczUtZHM3S0xSV3VsN1cxUlRNRXRmRXBZV3NsNVJ6Z2E0ekJTdHpkMTJCcTRXMm9ia0FmSEljMExxZ1J2ZElOanpPS3dCbWdmMUF0VDF2XzNRQlRBM0dGNnZaWENwMkY3ejkxWWwyUGQ?oc=5",
+      "language": "en"
+    },
+    {
+      "ref": 8,
+      "kind": "news",
+      "title": "Marketing-Interactive, 13 Aug 2025: Sunbeam Theatre to reopen in Whampoa this Saturday",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxONHgyV2g2NFNNSm9SREt1TlQtVmJ1TkVZc2tzRl85UE1kNFloc3VwTG1SajlHRWZlcXhpOHE0eFFLeUNJd25LNERnZEdqVjR0dUtGUGM1UENoLVVrcWhxV2p1ZGNNckdqcmdnN1AyYk41b1F6THhvV1J1QTJXc2x0eEZicjBybmwxTUIxN0pVTzdUdw?oc=5",
+      "language": "en"
+    },
+    {
+      "ref": 9,
+      "kind": "news",
+      "title": "South China Morning Post, 16 Dec 2013: Hung Sin-nui fans pay respect to late star at Sunbeam Theatre memorial",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOU0tOcjdwNGR1SVRtRXRXTER4NVZRTHJ0UlpJeE51MmJ5aGQ5ZFFQemxrdWpuU3d3R3lwb1JNamRyejBnNm56MXhWZHlVRHZUYUp1UlctRkR1QzNJVmk1NUdxV3FLSlI3ZmdLSDNoOHRXZ0lqMTVVR3dOdnp0Unk1RjllT2FCRWRtTU5md0VqMEVnZGExUjNKaU5qbG93YVcyb0txVzNYaFh2bVJ0V0l3aHYxMkRpUTDSAbcBQVVfeXFMTlpZX3FSUHE5anlFZUEwQ0JxQWg1c0FpSTkxSUlGdC0xOGEwcTZNdVU5NHZzOGQ5ZDdjOXYyaXppMzFCa3VCN0xwOS1qUWl0WFRNQ0ZWeWR4NE1qS3FGR1BxN2w0UTdaT3dEdnpOcW5tYmlVUmJScy1BZDg0R2lreWNhbGhVOE8zbUhBZTdlbWR1OGJaRmJHNHNoNndLNGdoenpOd1lhaWFJYVJyWXQtcGx3c0R5UnRz?oc=5",
+      "language": "en"
+    },
+    {
+      "ref": 10,
+      "kind": "news",
+      "title": "Mingtiandi, 24 Nov 2023: Opera Theatre Sold for Reported $128M in Hong Kong",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOUkdnYVNIRUl3Q1o4V21vbzZFNlhZeE5WQ04xZWcwZzFsN0JkdzJzd2tqdUJwSDF6RWh1bS1senJCc2pyT0tENHJOekR5OVNkSUFsY2U2QjAtd1VMdkYzZmxOVDhfYlp5aXJNNnI5cFM3Z3BZUDlmTlZzUFVMUGNHdWN6M1RMeFdidGRSTkNIcUdTV1F1bWhSYzcwOU9BZw?oc=5",
+      "language": "en"
+    },
+    {
+      "ref": 11,
+      "kind": "news",
+      "title": "ThinkChina, 18 Mar 2025: Venue closures and talent gaps: Cantonese opera’s battle for survival",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQcHlvMTNMbEE3OGxEc3RPam9NM3Z2MkZpbjVzZ2dlWUhVOFo2cWNoc1FMN0hzQXdWY1RpcHJTRE1MOXJYSGY1SnRjbEYxM2NIeWtOS2E5a2ZiVXNHSEFFUmVTQ3ZPem04MU5qbG1Vbzd5cS03ZS1mdTF1OWRFN2tnVGtxdkQ4c0YtRXhTQUlYU1FDSTYydHE0V3ZVTUhwOW9abjVvRHJzWWxJQQ?oc=5",
+      "language": "en"
+    }
+  ],
+  "events": [
+    {
+      "year": 1950,
+      "date_text": "1950s",
+      "title": "Shanghainese emigrants settle in North Point",
+      "description": "Businesses started by this community, including Sunbeam, shape the district.",
+      "kind": "cultural",
+      "source_refs": [
+        1
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 1972,
+      "date_text": "1972",
+      "title": "Theatre established",
+      "description": "Hua Chang Enterprises Ltd opens Sunbeam Theatre.",
+      "kind": "opened",
+      "source_refs": [
+        1,
+        2
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 1980,
+      "date_text": "1 September 1980",
+      "title": "New operator",
+      "description": "The theatre is turned over to Silver Entertainment Ltd.",
+      "kind": "ownership",
+      "source_refs": [
+        1
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 1988,
+      "date_text": "1988",
+      "title": "Hong Kong United Arts Entertainment takes over",
+      "description": "Operation passes to the company chaired by Yao-Hung.",
+      "kind": "ownership",
+      "source_refs": [
+        1
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 1989,
+      "date_text": "1989",
+      "title": "Divided into two auditoriums",
+      "description": "The balcony becomes a cinema; the stalls become a stage for live performance.",
+      "kind": "alteration",
+      "source_refs": [
+        1
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 1993,
+      "date_text": "1993",
+      "title": "38 full houses in a row",
+      "description": "The Chung Sun Sing Opera Troupe's season earns the title \"Hong Kong's Grand Palace for Cantonese Opera\".",
+      "kind": "cultural",
+      "source_refs": [
+        1
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 2003,
+      "date_text": "2003",
+      "title": "Property sold; mall plans",
+      "description": "Francis Law Sau-fai acquires the 80,000 sq ft property for HK$162 million, with plans for a shopping mall.",
+      "kind": "threat",
+      "source_refs": [
+        1
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 2007,
+      "date_text": "March 2007",
+      "title": "Small auditorium rebuilt",
+      "description": "The smaller hall becomes a multi-purpose theatre.",
+      "kind": "alteration",
+      "source_refs": [
+        1
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 2009,
+      "date_text": "February 2009",
+      "title": "Lease ends; three-year reprieve",
+      "description": "After public debate the lease is renewed for three years, while the landlord signals redevelopment plans.",
+      "kind": "threat",
+      "source_refs": [
+        1
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 2009,
+      "date_text": "2009",
+      "title": "Cantonese opera inscribed by UNESCO",
+      "description": "Yueju opera joins the Representative List of the Intangible Cultural Heritage of Humanity.",
+      "kind": "designation",
+      "source_refs": [
+        3
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 2012,
+      "date_text": "2012",
+      "title": "Rent deal keeps the stage",
+      "description": "Playwright Li Kui-ming agrees a HK$1 million monthly rent, keeping the building an opera theatre.",
+      "kind": "ownership",
+      "source_refs": [
+        1
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 2013,
+      "date_text": "December 2013",
+      "title": "Memorial for Hung Sin-nui",
+      "description": "Fans pay their respects to the late opera star at the theatre.",
+      "kind": "cultural",
+      "source_refs": [
+        9
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 2023,
+      "date_text": "August–November 2023",
+      "title": "Building put up for sale",
+      "description": "The building that houses the theatre goes on the market; a sale is reported in November.",
+      "kind": "ownership",
+      "source_refs": [
+        1,
+        10
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 2024,
+      "date_text": "February 2024",
+      "title": "Church named as buyer",
+      "description": "Island Evangelical Community Church is reported to be buying the premises.",
+      "kind": "ownership",
+      "source_refs": [
+        1,
+        5
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 2024,
+      "date_text": "September 2024",
+      "title": "Lease set to expire",
+      "description": "Reports confirm the opera venue's lease is coming to an end.",
+      "kind": "threat",
+      "source_refs": [
+        4
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 2025,
+      "date_text": "3 March 2025",
+      "title": "Theatre closes after 52 years",
+      "description": "Crowds attend the final days before the North Point theatre closes for renovation.",
+      "kind": "closure",
+      "source_refs": [
+        1,
+        6
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 2025,
+      "date_text": "April 2025",
+      "title": "A new home in Whampoa",
+      "description": "The Sunbeam operation announces a move to a new venue in Whampoa.",
+      "kind": "change_of_use",
+      "source_refs": [
+        7
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 2025,
+      "date_text": "August 2025",
+      "title": "Sunbeam reopens in Whampoa",
+      "description": "The opera operation resumes performances at its new venue.",
+      "kind": "reopening",
+      "source_refs": [
+        8
+      ],
+      "origin": "seed"
+    },
+    {
+      "year": 2028,
+      "date_text": "Expected early 2028",
+      "title": "Planned completion of the revitalisation",
+      "description": "The new owner plans a multi-purpose space where booked performances can return.",
+      "kind": "restoration",
+      "source_refs": [
+        1
+      ],
+      "origin": "seed"
+    }
+  ]
+}

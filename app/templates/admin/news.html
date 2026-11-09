@@ -1,0 +1,48 @@
+{% extends "admin/base_admin.html" %}
+{% import "partials/macros.html" as m with context %}
+
+{% block content %}
+<section class="container" style="padding-top: 40px;">
+  <div class="spread">
+    <h1 style="font-size: 2.4rem;">News monitor</h1>
+    <form class="inline" method="post" action="/admin/news/check-all">{{ m.csrf() }}<button class="btn btn-outline btn-sm">Check news now</button></form>
+  </div>
+  <p class="muted">New articles found for archive sites. {% if ai_enabled %}AI marks relevance and proposes chronicle events and status changes; you decide.{% else %}Configure GEMINI_API_KEY to get relevance checks and suggestions.{% endif %}</p>
+  <nav class="tabs">
+    <a href="/admin/news?show=relevant" {% if show == 'relevant' %}style="background: var(--ink); color: var(--paper);"{% endif %}>Relevant or unchecked</a>
+    <a href="/admin/news?show=all" {% if show == 'all' %}style="background: var(--ink); color: var(--paper);"{% endif %}>All new</a>
+  </nav>
+
+  {% for item in items %}
+  <article class="queue-item" style="grid-template-columns: 180px minmax(0, 1fr) auto;">
+    <div>
+      <a href="/admin/sites/{{ item.site_slug }}"><strong>{{ item.site_title }}</strong></a><br>
+      {{ m.risk_badge(item.site_risk_status) }}
+    </div>
+    <div>
+      <a href="{{ item.url }}" rel="noopener nofollow" target="_blank"><strong>{{ item.title }}</strong></a>
+      <div class="small muted">{{ item.source_name }} · {{ item.published_at }}</div>
+      {% if item.ai_relevant is not none %}
+      <p class="small" style="margin-top: 6px;">
+        <span class="pill pill-ai">AI</span>
+        {% if item.ai_relevant %}relevant{% else %}probably unrelated{% endif %}
+        {% if item.ai_threat_level %} · threat: {{ item.ai_threat_level }}{% endif %}
+        {% if item.ai_suggested_status %} · suggests status <strong>{{ RISK_STATUSES[item.ai_suggested_status].label }}</strong>{% endif %}
+      </p>
+      {% if item.ai_summary %}<p class="small">{{ item.ai_summary }}</p>{% endif %}
+      {% if item.ai_event %}<p class="small"><strong>Proposed event:</strong> {{ item.ai_event.date_text or item.ai_event.year }}: {{ item.ai_event.title }}</p>{% endif %}
+      {% endif %}
+    </div>
+    <div class="actions">
+      <form method="post" action="/admin/news/{{ item.id }}/add-event">{{ m.csrf() }}<button class="btn btn-sm">Add to chronicle</button></form>
+      {% if item.ai_suggested_status %}
+      <form method="post" action="/admin/news/{{ item.id }}/apply-status">{{ m.csrf() }}<button class="btn btn-outline btn-sm">Apply status</button></form>
+      {% endif %}
+      <form method="post" action="/admin/news/{{ item.id }}/dismiss">{{ m.csrf() }}<button class="btn btn-ghost btn-sm">Dismiss</button></form>
+    </div>
+  </article>
+  {% else %}
+  <p class="empty">No new articles.</p>
+  {% endfor %}
+</section>
+{% endblock %}

@@ -1,0 +1,10 @@
+<figure class="photo">
+  <a href="{{ photo.source_page_url or photo.image_url }}" rel="noopener" target="_blank" title="{{ photo.title }}">
+    <img src="{{ photo.thumb_url or photo.image_url }}" alt="{{ photo.description or photo.title }}" loading="lazy">
+  </a>
+  <figcaption>
+    <span>{{ photo.title }}</span><br>
+    {% if photo.date_text and photo.year_source == 'metadata' %}{{ photo.date_text[:10] }} · {% endif %}{% if photo.year_source == 'ai_estimate' %}<span class="pill pill-ai" title="Year estimated by AI">≈{{ photo.year }}</span> {% endif %}{{ m.license_note(photo) }}
+
+  </figcaption>
+</figure>

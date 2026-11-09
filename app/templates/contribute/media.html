@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% import "partials/macros.html" as m with context %}
+{% block title %}{{ t('send_video') }} · {{ site.title }}{% endblock %}
+{% block content %}
+<section class="narrow" style="padding-top:56px">
+  <p><a href="/site/{{ site.slug }}?lang={{ lang }}#contribute">← {{ site.title }}</a></p>
+  <h1>{{ t('send_video') }}</h1><p>{{ t('video_intro') }}</p><p class="muted">{{ t('review_note') }}</p>
+  {% if error %}<div class="alert alert-error" role="alert">{{ error }}</div>{% endif %}
+  <form class="panel" method="post" action="/site/{{ site.slug }}/media?lang={{ lang }}" enctype="multipart/form-data">
+    {{ m.csrf() }}
+    <div class="field"><label for="file">{{ t('file') }}</label><input type="file" name="file" id="file" accept="video/mp4,video/webm"></div>
+    <div class="field"><label for="url">{{ t('or_link') }}</label><input type="url" name="url" id="url" value="{{ form.url or '' }}" placeholder="https://…"></div>
+    <div class="field"><label for="title">{{ t('title') }}</label><input type="text" id="title" name="title" required maxlength="160" value="{{ form.title or '' }}"></div>
+    <div class="field"><label for="description">{{ t('description') }}</label><textarea name="description" id="description" maxlength="1000">{{ form.description or '' }}</textarea></div>
+    <div class="field"><label for="author_name">{{ t('author') }}</label><input name="author_name" id="author_name" maxlength="120" value="{{ form.author_name or '' }}"></div>
+    <div class="field"><label class="check"><input type="checkbox" name="consent" value="yes" required><span>{{ t('video_consent') }}</span></label></div>
+    <button class="btn btn-accent" type="submit">{{ t('send_review') }}</button>
+  </form>
+</section>
+{% endblock %}

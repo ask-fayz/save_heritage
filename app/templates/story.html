@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% import "partials/macros.html" as m with context %}
+{% block title %}{{ deck.title }} · Safe Heritage{% endblock %}
+{% block body_class %}story-page{% endblock %}
+{% block content %}
+<div class="container story-shell" data-story data-lang="{{ lang }}">
+  <div class="spread story-heading"><a href="/archive?lang={{ lang }}">← {{ t('archive') }}</a><span class="eyebrow">{{ t('short') }}</span></div>
+  <h1>{{ deck.title }}</h1>
+  {% if fallback %}
+  <div class="story-notice"><p>{{ t('fallback') }}</p>
+    {% if ai_enabled and public_generation %}<form method="post" action="/site/{{ site.slug }}/story?lang={{ lang }}">{{ m.csrf() }}<input type="hidden" name="lang" value="{{ lang }}"><button class="btn btn-outline btn-sm">{{ t('translate') }}</button></form>{% endif %}
+  </div>
+  {% endif %}
+  <div class="story-progress" aria-hidden="true">{% for chapter in deck.chapters %}<span data-progress></span>{% endfor %}</div>
+  <div class="story-controls" data-story-controls hidden>
+    <span data-counter aria-live="polite"></span>
+    <button class="btn btn-ghost btn-sm" data-listen type="button" {% if fallback %}hidden{% endif %}>{{ t('listen') }}</button>
+    <button class="btn btn-ghost btn-sm" data-share type="button">{{ t('share') }}</button>
+  </div>
+  {% for chapter in deck.chapters %}
+  <article class="story-chapter" data-chapter aria-labelledby="chapter-{{ loop.index }}">
+    <div class="chapter-visual">
+    {% set photo = photos.get(chapter.photo_id) %}
+    {% if photo %}
+      <figure><img src="{{ photo.image_url }}" alt="{{ photo.title }}" {% if not loop.first %}loading="lazy"{% endif %}>
+      <figcaption>{{ photo.title }}{% if photo.year %} · {{ photo.year }}{% endif %}<br>{{ m.license_note(photo) }}</figcaption></figure>
+    {% else %}<div class="chapter-art" aria-hidden="true"><span>{{ '%02d'|format(loop.index) }}</span><div>{{ site.native_name or deck.title }}</div></div>{% endif %}
+    </div>
+    <div class="chapter-copy"><p class="eyebrow">{{ t('chapter') }} {{ '%02d'|format(loop.index) }}</p>
+      <h2 id="chapter-{{ loop.index }}" tabindex="-1">{{ chapter.title }}</h2><p class="chapter-text">{{ chapter.content }}</p>
+      <div class="chapter-sources"><span>{{ t('sources') }}</span>
+        {% for ref in chapter.source_refs if ref in sources %}<a href="{{ sources[ref].url }}" target="_blank" rel="noopener">[{{ ref }}] {{ sources[ref].title }}</a>{% else %}<span class="muted">{{ t('no_source') }}</span>{% endfor %}
+      </div>
+    </div>
+  </article>
+  {% endfor %}
+  <nav class="story-navigation" data-story-controls hidden aria-label="{{ t('chapter') }}">
+    <button class="btn btn-outline" type="button" data-prev>← {{ t('previous') }}</button>
+    <button class="btn btn-accent" type="button" data-next>{{ t('next') }} →</button>
+  </nav>
+  <p class="small" data-share-status role="status"></p>
+  <div class="story-end" data-story-end>
+    <p class="eyebrow">{{ t('voices') }}</p><h2>{{ t('voices_text') }}</h2>
+    <div class="row"><a class="btn btn-accent" href="/site/{{ site.slug }}/memories/new?lang={{ lang }}">{{ t('share_memory') }}</a>
+    <a class="btn btn-outline" href="/site/{{ site.slug }}?lang={{ lang }}">{{ t('dossier') }} →</a></div>
+  </div>
+</div>
+<script id="story-labels" type="application/json">{{ {'chapter': t('chapter'), 'next': t('next'), 'restart': t('restart'), 'listen': t('listen'), 'stop': t('stop'), 'copied': t('copied'), 'copy_error': t('copy_error')} | tojson }}</script>
+{% endblock %}
+{% block scripts %}<script src="/static/js/story.js?v={{ static_version }}" defer></script>{% endblock %}

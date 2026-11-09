@@ -1,0 +1,21 @@
+{% macro risk_badge(status) -%}
+<span class="risk-badge risk-{{ status }}" title="{{ RISK_STATUSES[status].description if status in RISK_STATUSES else '' }}">{{ t(status) if status in RISK_STATUSES else status }}</span>
+{%- endmacro %}
+
+{% macro refs(numbers, sources) -%}
+{%- set known = [] -%}
+{%- for n in numbers or [] if n in sources %}{% set _ = known.append(n) %}{% endfor -%}
+{%- if known -%}
+<span class="refs">{% for n in known %}<a href="#source-{{ n }}" title="{{ sources[n].title }}">[{{ n }}]</a>{% endfor %}</span>
+{%- else -%}
+<span class="no-source" title="No source has been linked to this statement yet">no source</span>
+{%- endif -%}
+{%- endmacro %}
+
+{% macro csrf() -%}
+<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+{%- endmacro %}
+
+{% macro license_note(photo) -%}
+{% if photo.author %}{{ photo.author }}{% endif %}{% if photo.license %}{% if photo.author %} · {% endif %}{% if photo.license_url %}<a href="{{ photo.license_url }}" rel="noopener license" target="_blank">{{ photo.license }}</a>{% else %}{{ photo.license }}{% endif %}{% endif %}{% if photo.source_page_url %} · <a href="{{ photo.source_page_url }}" rel="noopener" target="_blank">{{ photo.provider|capitalize }}</a>{% endif %}
+{%- endmacro %}

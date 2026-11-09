@@ -1,0 +1,18 @@
+<a class="site-card" href="/site/{{ site.slug }}?lang={{ lang }}">
+  <div class="swatch" style="background: linear-gradient(90deg, {{ site.theme.bg or '#1A0A0A' }}, {{ site.theme.accent_red or '#C8102E' }}, {{ site.theme.accent_gold or '#D4A843' }});"></div>
+  <div class="body">
+    <div class="spread">
+      {{ m.risk_badge(site.risk_status) }}
+      <div class="row" style="gap: 6px;">
+        {% if not site.is_published %}<span class="pill pill-warn">Hidden</span>{% endif %}
+      </div>
+    </div>
+    <h3>{{ site.title }}</h3>
+    {% if site.native_name %}<div class="native">{{ site.native_name }}</div>{% endif %}
+    <p>{{ site.tagline }}</p>
+    <div class="meta">
+      <span>{{ site.location_label or 'Location unknown' }}</span>
+      <span aria-hidden="true">→</span>
+    </div>
+  </div>
+</a>

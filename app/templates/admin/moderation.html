@@ -1,0 +1,98 @@
+{% extends "admin/base_admin.html" %}
+{% import "partials/macros.html" as m with context %}
+
+{% macro decide(kind, id) -%}
+<div class="actions">
+  <form method="post" action="/admin/moderate/{{ kind }}/{{ id }}/approve">{{ m.csrf() }}<button class="btn btn-sm" type="submit">Approve</button></form>
+  <form method="post" action="/admin/moderate/{{ kind }}/{{ id }}/reject">{{ m.csrf() }}<button class="btn btn-ghost btn-sm" type="submit">Reject</button></form>
+</div>
+{%- endmacro %}
+
+{% block content %}
+<section class="container" style="padding-top: 40px;">
+  <h1 style="font-size: 2.4rem;">Moderation</h1>
+  <nav class="tabs" aria-label="Queues">
+    {% for key, label in [('memories', 'Memories'), ('photos', 'Photos'), ('media', 'Recordings'), ('events', 'Events')] %}
+    <a href="#{{ key }}">{{ label }} ({{ pending[key]|length }})</a>
+    {% endfor %}
+  </nav>
+
+  <h2 class="subhead" id="memories">Memories</h2>
+  {% for item in pending.memories %}
+  <article class="queue-item">
+    <div>
+      {% if item.kind == 'photo' and item.file_path %}<img src="/admin/media/{{ item.file_path }}" alt="">{% endif %}
+      {% if item.kind == 'audio' and item.file_path %}<audio controls preload="none" src="/admin/media/{{ item.file_path }}" style="width: 160px;"></audio>{% endif %}
+      <span class="pill">{{ item.kind }}</span>
+    </div>
+    <div>
+      <div class="small muted"><a href="/site/{{ item.site_slug }}">{{ item.site_title }}</a> · {{ item.author_name or 'Anonymous' }} · {{ item.created_at }} · {{ item.license }}</div>
+      {% if item.moderation_flags %}<p>{% for flag in item.moderation_flags %}<span class="pill pill-warn">{{ flag }}</span> {% endfor %}</p>{% endif %}
+      {% if item.text_original %}<p style="white-space: pre-line;">{{ item.text_original }}</p>{% endif %}
+      {% if item.ai_status == 'done' %}
+      <details open><summary class="small"><span class="pill pill-ai">AI</span> {{ item.language }} · {{ item.summary }}</summary>
+        {% if item.transcript %}<p class="small"><strong>Transcript:</strong> {{ item.transcript }}</p>{% endif %}
+        {% if item.text_en and item.text_en != item.text_original %}<p class="small"><strong>English:</strong> {{ item.text_en }}</p>{% endif %}
+        {% if item.photo_description %}<p class="small"><strong>Photo:</strong> {{ item.photo_description }}</p>{% endif %}
+        {% if item.year_estimate %}<p class="small"><strong>Year estimate:</strong> {{ item.year_estimate }} ({{ item.year_estimate_reason }})</p>{% endif %}
+        {% if item.tags %}<p class="small">{% for tag in item.tags %}<span class="pill">{{ tag }}</span> {% endfor %}</p>{% endif %}
+      </details>
+      {% elif item.ai_status == 'failed' %}<p class="small alert alert-error">AI processing failed: {{ item.ai_error }}</p>
+      {% elif item.ai_status == 'pending' %}<p class="small muted">AI processing in progress…</p>{% endif %}
+      {% if item.year_given %}<p class="small">Year given: {{ item.year_given }}</p>{% endif %}
+    </div>
+    {{ decide('memories', item.id) }}
+  </article>
+  {% else %}<p class="muted">Nothing to review.</p>{% endfor %}
+
+  <h2 class="subhead" id="photos">Photos</h2>
+  {% set photo_sites = pending.photos | groupby('site_slug') %}
+  {% for slug, items in photo_sites %}
+  <div class="spread" style="margin: 10px 0;">
+    <strong><a href="/admin/sites/{{ slug }}#photos">{{ items[0].site_title }}</a>: {{ items|length }} photos</strong>
+    <form class="inline" method="post" action="/admin/sites/{{ slug }}/photos/approve-all">{{ m.csrf() }}<button class="btn btn-outline btn-sm">Approve all for this site</button></form>
+  </div>
+  {% for item in items %}
+  <article class="queue-item">
+    <img src="{{ item.thumb_url or item.image_url }}" alt="" loading="lazy">
+    <div>
+      <strong>{{ item.title }}</strong>
+      <div class="small muted">{{ item.provider }} · {{ item.date_text or 'undated' }} · {{ m.license_note(item) }}</div>
+      {% if item.description %}<p class="small">{{ item.description }}</p>{% endif %}
+      {% if item.relevance_note %}<p class="small"><span class="pill pill-ai">note</span> {{ item.relevance_note }}</p>{% endif %}
+    </div>
+    {{ decide('photos', item.id) }}
+  </article>
+  {% endfor %}
+  {% else %}<p class="muted">Nothing to review.</p>{% endfor %}
+
+  <h2 class="subhead" id="media">Recordings</h2>
+  {% for item in pending.media %}
+  <article class="queue-item">
+    <div><span class="pill">{{ item.kind }}</span></div>
+    <div>
+      <strong>{{ item.title }}</strong>{% if item.year %} · {{ item.year }}{% endif %}
+      <div class="small muted"><a href="/site/{{ item.site_slug }}">{{ item.site_title }}</a> · {{ item.submitted_by or 'Anonymous' }}</div>
+      {% if item.embed_url %}<div class="embed" style="margin-top: 10px; max-width: 520px;"><iframe src="{{ item.embed_url }}" title="{{ item.title }}" loading="lazy" allow="fullscreen"></iframe></div>{% endif %}
+      <p class="small"><a href="{{ item.url.replace('/media/', '/admin/media/', 1) if item.kind == 'uploaded_video' else item.url }}" rel="noopener nofollow" target="_blank">{{ item.url }}</a></p>
+      {% if item.description %}<p class="small">{{ item.description }}</p>{% endif %}
+    </div>
+    {{ decide('media', item.id) }}
+  </article>
+  {% else %}<p class="muted">Nothing to review.</p>{% endfor %}
+
+  <h2 class="subhead" id="events">Chronicle events</h2>
+  {% for item in pending.events %}
+  <article class="queue-item">
+    <div><strong>{{ item.year or '—' }}</strong><br><span class="pill">{{ item.origin }}</span></div>
+    <div>
+      <strong>{{ item.title }}</strong> <span class="small muted">{{ item.date_text }}</span>
+      <div class="small muted"><a href="/site/{{ item.site_slug }}">{{ item.site_title }}</a></div>
+      <p class="small">{{ item.description }}</p>
+      {% if item.source_url %}<p class="small"><a href="{{ item.source_url }}" rel="noopener nofollow" target="_blank">{{ item.source_title or item.source_url }}</a></p>{% endif %}
+    </div>
+    {{ decide('events', item.id) }}
+  </article>
+  {% else %}<p class="muted">Nothing to review.</p>{% endfor %}
+</section>
+{% endblock %}

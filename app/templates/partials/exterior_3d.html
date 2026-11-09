@@ -1,0 +1,17 @@
+<section class="site-section" id="exterior-3d">
+  <div class="container">
+  <div class="section-head"><h2>{{ t('view_3d') }}</h2><p>{{ t('exterior_intro') }}</p></div>
+  {% if site.latitude is not none and site.longitude is not none and maps_enabled %}
+  <div class="exterior-view" data-key="{{ maps_browser_key }}" data-lat="{{ site.latitude }}" data-lng="{{ site.longitude }}" data-lang="{{ lang }}" data-loading="{{ t('maps_loading') }}" data-error="{{ t('maps_error') }}" data-loaded="{{ t('maps_loaded') }}">
+    <button class="btn btn-accent exterior-load" type="button">{{ t('load_3d') }}</button>
+    <p class="exterior-status" role="status" aria-live="polite"></p>
+    <div class="exterior-map" hidden aria-label="{{ t('view_3d') }}"></div>
+  </div>
+  {% elif site.latitude is none or site.longitude is none %}<p class="muted">{{ t('maps_no_coordinates') }}</p>
+  {% else %}<p class="muted">{{ t('maps_unconfigured') }}</p>{% endif %}
+  <details class="exterior-help"><summary>{{ t('reconstruction_title') }}</summary>
+    <p>{{ t('reconstruction_help') }}</p>
+    <a class="btn btn-outline" href="/site/{{ site.slug }}/memories/new?kind=photo&lang={{ lang }}">{{ t('send_photo') }}</a>
+  </details>
+  </div>
+</section>

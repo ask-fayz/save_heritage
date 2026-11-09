@@ -1,0 +1,65 @@
+{% extends "admin/base_admin.html" %}
+{% import "partials/macros.html" as m with context %}
+
+{% block content %}
+<section class="container" style="padding-top: 40px;">
+  <h1 style="font-size: 2.4rem;">Curator dashboard</h1>
+
+  <div class="section-head" style="margin-top: 30px;"><h2 style="font-size: 1.4rem;">Waiting for review</h2></div>
+  <div class="admin-grid">
+    {% set labels = {'memories': 'Memories', 'photos': 'Photos', 'poses': 'Photo alignments', 'scans': '3D scans', 'media': 'Recordings', 'reconstructions': 'AI hypotheses', 'events': 'Chronicle events'} %}
+    {% for key, label in labels.items() %}
+    <a class="count-card" href="/admin/moderation#{{ key }}"><b>{{ pending[key] }}</b>{{ label }}</a>
+    {% endfor %}
+    <a class="count-card" href="/admin/news"><b>{{ pending.news }}</b>News to triage</a>
+  </div>
+
+  <div class="section-head spread" style="margin-top: 44px;">
+    <h2 style="font-size: 1.4rem;">Sites</h2>
+    <form class="inline" method="post" action="/admin/news/check-all">{{ m.csrf() }}<button class="btn btn-outline btn-sm">Check news for all sites</button></form>
+  </div>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Site</th><th>Status</th><th>Record</th><th>Updated</th><th>Actions</th></tr></thead>
+      <tbody>
+      {% for site in sites %}
+      <tr>
+        <td><a href="/site/{{ site.slug }}"><strong>{{ site.title }}</strong></a><br><span class="small muted">{{ site.location_label }}</span>{% if not site.is_published %} <span class="pill pill-warn">Hidden</span>{% endif %}</td>
+        <td>{{ m.risk_badge(site.risk_status) }}</td>
+        <td class="small">{{ site.generation_mode }}{% if site.wikidata_qid %} · {{ site.wikidata_qid }}{% endif %}<br>coords: {{ site.coord_source }}</td>
+        <td class="small">{{ site.updated_at[:16] }}</td>
+        <td>
+          <div class="row">
+            <a class="btn btn-sm" href="/admin/sites/{{ site.slug }}">Edit</a>
+            {% for action, label in [('photos', 'Photos'), ('models', '3D search'), ('news', 'News')] %}
+            <form class="inline" method="post" action="/admin/sites/{{ site.slug }}/actions/{{ action }}">{{ m.csrf() }}<button class="btn btn-ghost btn-sm">{{ label }}</button></form>
+            {% endfor %}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid-2" style="margin-top: 44px; gap: 30px;">
+    <div>
+      <h2 style="font-size: 1.4rem; margin-bottom: 12px;">Configuration</h2>
+      <ul class="config-list">
+        {% for label, enabled in config.items() %}<li><span class="{{ 'ok' if enabled else 'off' }}">{{ '✓' if enabled else '–' }}</span> {{ label }}</li>{% endfor %}
+      </ul>
+    </div>
+    <div>
+      <h2 style="font-size: 1.4rem; margin-bottom: 12px;">Recent jobs</h2>
+      {% if jobs %}
+      <ul class="news-list">
+        {% for job in jobs %}
+        <li><a href="/jobs/{{ job.id }}">{{ job.kind }}</a> · <span class="pill">{{ job.status }}</span>
+          {% if job.site_title %}· {{ job.site_title }}{% endif %}<br><span class="small muted">{{ job.created_at }}{% if job.error %} · {{ job.error[:120] }}{% endif %}</span></li>
+        {% endfor %}
+      </ul>
+      {% else %}<p class="muted">No jobs yet.</p>{% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% import "partials/macros.html" as m with context %}
+{% block title %}SAVE Heritage · {{ t('home_title') }}{% endblock %}
+
+{% block content %}
+<section class="hero-home discovery-hero container">
+  <h1>{{ t('home_title') }}</h1>
+  <p class="lede">{{ t('home_intro') }}</p>
+
+  <div class="submit-box">
+    {% if error %}<div class="alert alert-error" role="alert">{{ error }}</div>{% endif %}
+    {% if public_generation %}
+    <form action="/generate?lang={{ lang }}" method="post" class="generate-form">
+      {{ m.csrf() }}
+      <div class="generate-input-row">
+        <label for="url" class="visually-hidden">{{ t('input_label') }}</label>
+        <input id="url" type="text" name="url" required
+               placeholder="{{ t('placeholder') }}"
+               value="{{ submitted_url or '' }}">
+        <button class="btn btn-accent" type="submit">{{ t('create') }}</button>
+      </div>
+      <input type="hidden" name="lang" value="{{ lang }}">
+    </form>
+    <p class="hint">{{ t('hint') }}{% if not ai_enabled %}<br><strong>{{ t('basic') }}</strong>{% endif %}</p>
+    {% else %}
+    <p class="alert alert-info">{{ t('disabled') }}</p>
+    {% endif %}
+  </div>
+
+  <div class="stats" aria-label="Archive in numbers">
+    <div class="stat"><b>{{ counts.sites }}</b><span>places</span></div>
+    <div class="stat"><b>{{ counts.endangered }}</b><span>at risk</span></div>
+    <div class="stat"><b>{{ counts.lost }}</b><span>lost or closed</span></div>
+    <div class="stat"><b>{{ counts.photos }}</b><span>{{ t('photos') }}</span></div>
+    <div class="stat"><b>{{ counts.memories }}</b><span>memories</span></div>
+  </div>
+</section>
+
+<section class="container" id="map-section">
+  <div class="section-head spread">
+    <div>
+      <h2>{{ t('globe_title') }}</h2>
+      <p class="muted" style="margin: 6px 0 0;">{{ t('globe_hint') }}</p>
+    </div>
+    <a class="btn btn-outline btn-sm" href="/archive?lang={{ lang }}">{{ t('archive') }}</a>
+  </div>
+  {% include "partials/heritage_map.html" %}
+</section>
+
+<section class="container">
+  <div class="section-head"><h2>Three layers on top of every place</h2></div>
+  <div class="layers">
+    <article class="layer">
+      <div class="num">01 · Time</div>
+      <h3>Then and now</h3>
+      <p class="muted">Dated photographs from open archives and a chronicle of the people and events that shaped this place.</p>
+    </article>
+    <article class="layer">
+      <div class="num">02 · People</div>
+      <h3>Living memory</h3>
+      <p class="muted">Stories, family photos and voice recordings from visitors, performers and neighbours, transcribed and
+        translated, checked by curators.</p>
+    </article>
+    <article class="layer">
+      <div class="num">03 · Risk</div>
+      <h3>What we could lose</h3>
+      <p class="muted">A status for every place, news monitoring for sales, closures and demolitions, and a Preservation Passport
+        that stays when the place does not.</p>
+    </article>
+  </div>
+</section>
+
+{% if endangered %}
+<section class="container">
+  <div class="section-head spread"><h2>Needs attention</h2><a class="btn btn-outline btn-sm" href="/archive?status=endangered&amp;lang={{ lang }}">All places at risk</a></div>
+  <div class="grid-sites">
+    {% for site in endangered %}{% include "partials/site_card.html" %}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="container">
+  <div class="section-head spread"><h2>{{ t('latest') }}</h2><a class="btn btn-outline btn-sm" href="/archive?lang={{ lang }}">{{ t('archive') }}</a></div>
+  {% if recent %}
+  <div class="grid-sites">
+    {% for site in recent %}{% include "partials/site_card.html" %}{% endfor %}
+  </div>
+  {% else %}
+  <p class="empty">{{ t('empty') }}</p>
+  {% endif %}
+</section>
+
+{% endblock %}

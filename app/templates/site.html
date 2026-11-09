@@ -1,0 +1,389 @@
+{% extends "base.html" %}
+{% import "partials/macros.html" as m with context %}
+{% set site_lang = site.language or 'en' %}
+{% block title %}{{ site.title }} · SAVE Heritage{% endblock %}
+{% block description %}{{ site.tagline }}{% endblock %}
+{% block body_class %}site-theme{% endblock %}
+{% block body_attrs %}style="--bg: {{ theme.bg }}; --bg-darker: {{ theme.bg_darker }}; --accent-red: {{ theme.accent_red }}; --accent-gold: {{ theme.accent_gold }}; --text: {{ theme.text_cream }}; --card-bg: {{ theme.card_bg }}; --border: {{ theme.border_color }};"{% endblock %}
+
+
+
+{% block nav %}
+<a href="/archive">{{ t('label_0') }}</a>
+
+<a href="#passport">{{ t('label_1') }}</a>
+<a class="btn btn-accent btn-sm" href="#contribute">{{ t("contribute") }}</a>
+{% endblock %}
+
+{% block content %}
+<section class="site-hero">
+  <div>
+    <div class="label">{{ site.location_label }}</div>
+    <h1>{{ site.title }}</h1>
+    {% if site.native_name %}<div class="native">{{ site.native_name }}</div>{% endif %}
+    <p class="tagline">{{ site.tagline }}</p>
+    <div class="risk-line">
+      {{ m.risk_badge(site.risk_status) }}
+      
+    </div>
+    <div class="row" style="justify-content: center;">
+      <a href="#story" class="btn btn-accent">{{ t("read_story") }}</a>
+      
+      <a href="#passport" class="btn btn-outline">{{ t('label_17') }}</a>
+    </div>
+
+
+
+    {% if translation_missing %}
+    <div class="translation-note"><p>{{ t('fallback') }}</p>
+      {% if ai_enabled and public_generation %}<form method="post" action="/site/{{ site.slug }}/translate?lang={{ lang }}">{{ m.csrf() }}<input type="hidden" name="lang" value="{{ lang }}"><button class="btn btn-outline btn-sm">{{ t('translate') }}</button></form>{% endif %}
+    </div>
+    {% endif %}
+    {% if site.generation_mode == 'basic' %}<p class="small muted" style="margin-top: 18px;">Basic record: built without AI from Wikidata and the source article.</p>{% endif %}
+    {% if site.generation_mode == 'legacy' %}<p class="small muted" style="margin-top: 18px;">Imported from the first prototype. Statements are not linked to sources yet.</p>{% endif %}
+  </div>
+</section>
+
+<nav class="site-nav no-print" aria-label="Sections">
+  <ul>
+    <li><a href="#story">{{ t("read_story") }}</a></li>
+    <li><a href="#time">{{ t('label_2') }}</a></li>
+    <li><a href="#living">{{ t('label_3') }}</a></li>
+    <li><a href="#memories">{{ t('label_4') }}</a></li>
+
+    <li><a href="#risk">{{ t('label_5') }}</a></li>
+    <li><a href="#exterior-3d">{{ t("view_3d") }}</a></li>
+    <li><a href="#passport">{{ t('label_1') }}</a></li>
+    <li><a href="#facts">{{ t('label_6') }}</a></li>
+  </ul>
+</nav>
+
+<section class="site-section" id="story">
+  <div class="container">
+    <header><div class="eyebrow">{{ t('short') }}</div><h2>{{ t('read_story') }}</h2></header>
+    {% for card in story_chapters %}
+    <article class="editorial-chapter">
+      {% if card.photo %}<div class="editorial-image">{% set photo = card.photo %}{% include "partials/photo_figure.html" %}</div>{% endif %}
+      <div class="editorial-copy"><div class="eyebrow">{{ '%02d'|format(loop.index) }}</div><h3>{{ card.title }}</h3><p>{{ card.content }} {{ m.refs(card.source_refs, sources) }}</p></div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+{# ================================================================ TIME #}
+<section class="site-section" id="time">
+  <div class="container">
+    <header>
+      <div class="eyebrow">{{ t('label_7') }}</div>
+      <h2>{{ t('label_2') }}</h2>
+      <p>{{ t('label_35') }}
+        </p>
+    </header>
+
+    {% if timeline %}
+    <div class="decade-filter no-print" role="group" aria-label="Filter by decade" data-decades>
+      <button type="button" aria-pressed="true" data-decade="all">{{ t('label_30') }}</button>
+      {% for decade in decades %}<button type="button" aria-pressed="false" data-decade="{{ decade }}">{{ decade }}s</button>{% endfor %}
+    </div>
+    <ol class="timeline">
+      {% for entry in timeline %}
+      {% set item = entry.item %}
+      <li data-type="{{ entry.type }}" data-decade="{{ (entry.year // 10) * 10 if entry.year is not none else '' }}">
+        <div class="when">{{ entry.year if entry.year is not none else '—' }}</div>
+        <div class="dot" aria-hidden="true"></div>
+        <div class="what">
+          {% if entry.type == 'event' %}
+            <div class="kind">{{ EVENT_KINDS.get(item.kind, 'Event') }}{% if item.date_text and item.date_text != entry.year|string %} · {{ item.date_text }}{% endif %}</div>
+            <h3>{{ item.title }}</h3>
+            {% if item.description %}<p>{{ item.description }}
+              {% if item.source_url %}<span class="refs"><a href="{{ item.source_url }}" rel="noopener" target="_blank" title="{{ item.source_title }}">[source]</a></span>
+              {% else %}{{ m.refs(item.source_refs, sources) }}{% endif %}</p>{% endif %}
+          {% elif entry.type == 'photos' %}
+            <div class="kind">{{ item|length }} photograph{{ 's' if item|length != 1 }}</div>
+            <div class="photo-grid" style="margin-top: 8px;">
+              {% for photo in item %}{% include "partials/photo_figure.html" %}{% endfor %}
+            </div>
+          {% else %}
+            <div class="kind">Memory{% if item.author_name %} · {{ item.author_name }}{% endif %}</div>
+            <p>{{ item.summary or (item.text_en or item.text_original)[:180] }} <a href="#memory-{{ item.id }}">Read</a></p>
+          {% endif %}
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+    {% else %}
+    <p class="empty">No chronicle yet.</p>
+    {% endif %}
+
+    {% if undated_photos %}
+    <h3 class="subhead">{{ t('label_28') }}</h3>
+    <div class="photo-grid">
+      {% for photo in undated_photos %}{% include "partials/photo_figure.html" %}{% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{# ================================================================ LIVING HERITAGE #}
+<section class="site-section" id="living">
+  <div class="container">
+    <header>
+      <div class="eyebrow">{{ t('label_10') }}</div>
+      <h2>{{ content.culture_title or 'Living heritage' }}{% if content.culture_subtitle %}<span class="native">{{ content.culture_subtitle }}</span>{% endif %}</h2>
+      <p>{{ t('label_34') }}</p>
+    </header>
+
+    {% if content.culture_cards %}
+    <div class="grid-2">
+      {% for card in content.culture_cards %}
+      <article class="info-card"><h3>{{ card.title }}</h3><p>{{ card.content }} {{ m.refs(card.source_refs, sources) }}</p></article>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if content.practitioners %}
+    <h3 class="subhead">{{ t('label_11') }}</h3>
+    <div class="grid-3">
+      {% for person in content.practitioners %}
+      <article class="info-card">
+        <h3>{{ person.name }}</h3>
+        {% if person.role %}<p class="small muted" style="margin-top: -6px;">{{ person.role }}</p>{% endif %}
+        <p>{{ person.description }} {{ m.refs(person.source_refs, sources) }}</p>
+      </article>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if content.glossary %}
+    <h3 class="subhead">{{ t('label_12') }}</h3>
+    <dl class="glossary">
+      {% for term in content.glossary %}
+      <div><dt>{{ term.term }}{% if term.original %}<span>{{ term.original }}</span>{% endif %}</dt><dd>{{ term.definition }} {{ m.refs(term.source_refs, sources) }}</dd></div>
+      {% endfor %}
+    </dl>
+    {% endif %}
+
+    <h3 class="subhead">{{ t('label_13') }}</h3>
+    {% if media %}
+    <div class="grid-2">
+      {% for item in media %}
+      <article>
+        {% if item.kind == "uploaded_video" %}<video controls preload="metadata" src="{{ item.url }}" style="width:100%"></video>
+        {% elif item.embed_url %}
+        <div class="embed"><iframe src="{{ item.embed_url }}" title="{{ item.title }}" loading="lazy" allow="fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+        {% endif %}
+        <p style="margin-top: 10px;"><a href="{{ item.url }}" rel="noopener nofollow" target="_blank"><strong>{{ item.title }}</strong></a>{% if item.year %} · {{ item.year }}{% endif %}</p>
+        {% if item.description %}<p class="muted small">{{ item.description }}</p>{% endif %}
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="muted">{{ t('label_31') }}</p>
+    {% endif %}
+  </div>
+</section>
+
+{# ================================================================ MEMORIES #}
+<section class="site-section" id="memories">
+  <div class="container">
+    <header>
+      <div class="eyebrow">{{ t('label_8') }}</div>
+      <h2>{{ t('label_4') }}</h2>
+      <p>Stories, family photos and voices of people who knew this place. Transcribed and translated with AI, checked by curators.</p>
+    </header>
+    {% if memories %}
+    <div class="memories">
+      {% for memory in memories %}
+      <article class="memory" id="memory-{{ memory.id }}">
+        {% if memory.kind == 'photo' and memory.file_path %}
+        <img src="/media/{{ memory.file_path }}" alt="{{ memory.photo_description or 'Photo shared by a visitor' }}" loading="lazy">
+        {% endif %}
+        {% if memory.kind == 'audio' and memory.file_path %}
+        <audio controls preload="none" src="/media/{{ memory.file_path }}"></audio>
+        {% endif %}
+        {% set shown = memory.text_en or memory.transcript or memory.text_original %}
+        {% if shown %}<blockquote {% if not memory.text_en %}lang="{{ memory.language }}"{% endif %}>{{ shown }}</blockquote>{% endif %}
+        {% if memory.text_en and memory.language and memory.language[:2] != 'en' %}
+        <details><summary>Original ({{ memory.language }})</summary><p lang="{{ memory.language }}" style="white-space: pre-line;">{{ memory.transcript or memory.text_original }}</p></details>
+        {% endif %}
+        <div class="by">
+          {{ memory.author_name or 'Anonymous' }}{% set year = memory.year_given or memory.year_estimate %}{% if year %} · {{ year }}{% if not memory.year_given %} <span class="pill pill-ai" title="{{ memory.year_estimate_reason }}">AI estimate</span>{% endif %}{% endif %}
+          · {{ memory.license }}
+        </div>
+        {% if memory.tags %}<div class="tags">{% for tag in memory.tags %}<span class="pill">{{ tag }}</span>{% endfor %}</div>{% endif %}
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty">{{ t('label_32') }}</p>
+    {% endif %}
+  </div>
+</section>
+
+
+
+
+{# ================================================================ RISK #}
+<section class="site-section" id="risk">
+  <div class="container">
+    <header>
+      <div class="eyebrow">{{ t('label_9') }}</div>
+      <h2>{{ t('label_14') }}</h2>
+      <p>{{ t('label_33') }}</p>
+    </header>
+    <div class="risk-panel">
+      <div class="risk-status risk-{{ site.risk_status }}">
+        <div class="big">{{ RISK_STATUSES[site.risk_status].label }}</div>
+        <p class="muted">{{ RISK_STATUSES[site.risk_status].description }}</p>
+        {% if site.risk_summary %}<p>{{ site.risk_summary }} {{ m.refs(site.risk_source_refs, sources) }}</p>{% endif %}
+        {% if site.risk_reasons %}
+        <div class="row">{% for reason in site.risk_reasons %}<span class="pill">{{ RISK_REASONS.get(reason, reason) }}</span>{% endfor %}</div>
+        {% endif %}
+        {% if site.risk_updated_at %}<p class="small muted" style="margin-top: 14px;">Last reviewed {{ site.risk_updated_at[:10] }}</p>{% endif %}
+      </div>
+      <div>
+        <h3 class="serif" style="font-size: 1.3rem; margin-bottom: 8px;">{{ t('label_15') }}</h3>
+        {% if news %}
+        <ul class="news-list">
+          {% for item in news %}
+          <li><a href="{{ item.url }}" rel="noopener nofollow" target="_blank">{{ item.title }}</a><br><span class="small muted">{{ item.source_name }} · {{ item.published_at }}</span>
+            {% if item.ai_summary %}<p class="small" style="margin: 4px 0 0;">{{ item.ai_summary }}</p>{% endif %}</li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p class="muted">No curated news yet. Events from the news appear in the chronicle above.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+{# ================================================================ PRESERVATION PASSPORT #}
+{% include "partials/exterior_3d.html" %}
+
+<section class="site-section" id="passport">
+  <div class="container">
+    <header>
+      <div class="eyebrow">{{ t('label_16') }}</div>
+      <h2>{{ t('label_17') }}</h2>
+      <p>Official summary record, conservation status, and ways to protect and document {{ site.title }}.</p>
+    </header>
+
+    <div class="passport-card">
+      <div class="passport-head spread">
+        <div>
+          <div class="small muted">SAVE HERITAGE ARCHIVAL PASSPORT · ID #{{ site.id }}</div>
+          <h3 class="serif" style="font-size: 1.65rem; margin-top: 4px;">{{ site.title }}{% if site.native_name %} · {{ site.native_name }}{% endif %}</h3>
+        </div>
+
+      </div>
+
+      <dl class="passport-meta">
+        <div>
+          <dt>{{ t('label_18') }}</dt>
+          <dd>{{ site.location_label or 'Not recorded' }}</dd>
+        </div>
+        <div>
+          <dt>{{ t('label_19') }}</dt>
+          <dd>{% if site.latitude is not none %}{{ "%.4f"|format(site.latitude) }}, {{ "%.4f"|format(site.longitude) }} ({{ site.coord_source }}){% else %}Not mapped{% endif %}</dd>
+        </div>
+        <div>
+          <dt>Wikidata QID</dt>
+          <dd>{% if site.wikidata_qid %}<a href="https://www.wikidata.org/wiki/{{ site.wikidata_qid }}" rel="noopener" target="_blank">{{ site.wikidata_qid }}</a>{% else %}Unlinked{% endif %}</dd>
+        </div>
+        <div>
+          <dt>{{ t('label_20') }}</dt>
+          <dd>{{ m.risk_badge(site.risk_status) }}</dd>
+        </div>
+        <div>
+          <dt>{{ t('label_21') }}</dt>
+          <dd>{{ content.protection_level or 'No formal protection recorded in sources' }}</dd>
+        </div>
+        <div>
+          <dt>Archive Evidence</dt>
+          <dd>{{ sources|length }} sources · {{ events|length }} events · {{ photos|length }} photos · {{ memories|length }} memories</dd>
+        </div>
+      </dl>
+
+      {% if content.preservation_actions %}
+      <h4 class="serif" style="font-size: 1.25rem; margin: 24px 0 14px; color: var(--accent-gold);">{{ t('label_23') }}</h4>
+      <div class="grid-2">
+        {% for action in content.preservation_actions %}
+        <article class="info-card">
+          <h3>{{ action.title }}</h3>
+          <p>{{ action.content }} {{ m.refs(action.source_refs, sources) }}</p>
+        </article>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{# ================================================================ FACTS & SOURCES #}
+<section class="site-section" id="facts">
+  <div class="container">
+    <div class="facts">
+      <div>
+        <div class="eyebrow">{{ t('label_24') }}</div>
+        <h2>{{ t('label_25') }}</h2>
+        {% if content.quick_facts %}
+        <ul class="fact-list">
+          {% for fact in content.quick_facts %}<li>{{ fact.text }} {{ m.refs(fact.source_refs, sources) }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+        {% if content.did_you_know and content.did_you_know.text %}
+        <div class="info-card" style="margin-top: 22px;">
+          <h3><em>{{ t('label_26') }}</em></h3>
+          <p>{{ content.did_you_know.text }} {{ m.refs(content.did_you_know.source_refs, sources) }}</p>
+        </div>
+        {% endif %}
+        {% for point in content.disputed_points %}
+        <div class="dispute">
+          <strong>Sources disagree: {{ point.topic }}</strong>
+          <ul>{% for version in point.versions %}<li>{{ version.claim }} {{ m.refs(version.source_refs, sources) }}</li>{% endfor %}</ul>
+        </div>
+        {% endfor %}
+      </div>
+      <div>
+        <div class="eyebrow">{{ t('label_29') }}</div>
+        <h2>{{ t('label_27') }}</h2>
+        {% if sources %}
+        <ol class="sources">
+          {% for ref, source in sources.items() %}
+          <li id="source-{{ ref }}"><span class="n">[{{ ref }}]</span><span>{% if source.url %}<a href="{{ source.url }}" rel="noopener nofollow" target="_blank">{{ source.title or source.url }}</a>{% else %}{{ source.title }}{% endif %}
+            <span class="small muted">· {{ source.kind|replace('_', ' ') }}{% if source.language %} · {{ source.language }}{% endif %}</span></span></li>
+          {% endfor %}
+        </ol>
+        {% else %}
+        <p class="muted">No sources recorded.</p>
+        {% endif %}
+        {% if site.wikidata_qid %}<p class="small muted" style="margin-top: 14px;">Wikidata item: <a href="https://www.wikidata.org/wiki/{{ site.wikidata_qid }}" rel="noopener" target="_blank">{{ site.wikidata_qid }}</a></p>{% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="site-section no-print" id="contribute">
+  <div class="container"><div class="contribution-panel">
+    <div class="eyebrow">{{ t('contribute') }}</div><h2>{{ t('contribute_title') }}</h2><p>{{ t('contribute_intro') }}</p>
+    <div class="contribution-options">
+      <a href="/site/{{ site.slug }}/memories/new?kind=photo&lang={{ lang }}"><span aria-hidden="true">▧</span><strong>{{ t('send_photo') }}</strong><small>JPEG · PNG · WebP</small></a>
+      <a href="/site/{{ site.slug }}/media/new?lang={{ lang }}"><span aria-hidden="true">▷</span><strong>{{ t('send_video') }}</strong><small>MP4 · WebM · {{ t('video_link') }}</small></a>
+      <a href="/site/{{ site.slug }}/memories/new?lang={{ lang }}"><span aria-hidden="true">✎</span><strong>{{ t('share_memory') }}</strong><small>{{ t('text_voice') }}</small></a>
+    </div><p class="small muted">{{ t('review_note') }}</p>
+  </div></div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+
+<script src="/static/js/exterior-3d.js?v={{ static_version }}" defer></script>
+<script src="/static/js/site.js?v={{ static_version }}" defer></script>
+
+{% endblock %}

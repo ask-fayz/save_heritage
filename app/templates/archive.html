@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% import "partials/macros.html" as m with context %}
+{% block title %}Archive · SAVE Heritage{% endblock %}
+
+{% block content %}
+<section class="container">
+  <div class="section-head">
+    <h1 class="serif" style="font-size: clamp(2.2rem, 5vw, 3.4rem);">
+      {% if status == 'lost' %}Lost and closed places{% elif status == 'endangered' %}Places at risk{% else %}Heritage archive{% endif %}
+    </h1>
+    <p class="muted">
+      {% if status == 'lost' %}Demolished, destroyed, or no longer used as heritage. The archive keeps what remains: photos, stories and the chronicle.
+      {% elif status == 'endangered' %}Places with warning signs or concrete threats, based on sources and news monitoring.
+      {% else %}{{ counts.sites }} places, each with sources, a chronicle, an AI Keeper and a Preservation Passport.{% endif %}
+    </p>
+  </div>
+
+  <div class="filters">
+    {% set filters = [('', 'All'), ('endangered', 'At risk'), ('critical', 'Critical'), ('lost', 'Lost or closed'), ('stable', 'Stable'), ('unknown', 'Not assessed')] %}
+    {% for value, label in filters %}
+    <a href="/archive{% if value %}?status={{ value }}{% endif %}" {% if status == value %}aria-current="true"{% endif %}>{{ label }}</a>
+    {% endfor %}
+    <form action="/archive" method="get" role="search">
+      {% if status %}<input type="hidden" name="status" value="{{ status }}">{% endif %}
+      <label for="q" class="visually-hidden">Search the archive</label>
+      <input id="q" type="search" name="q" value="{{ q }}" placeholder="Search by name or place">
+      <button class="btn btn-sm" type="submit">Search</button>
+    </form>
+  </div>
+
+  {% if map_sites %}
+  <div style="margin-bottom: 32px;">
+    {% include "partials/heritage_map.html" %}
+  </div>
+  {% endif %}
+
+  {% if sites %}
+  <div class="grid-sites">
+    {% for site in sites %}{% include "partials/site_card.html" %}{% endfor %}
+  </div>
+  {% else %}
+  <p class="empty">No places match{% if q %} "{{ q }}"{% endif %}.</p>
+  {% endif %}
+</section>
+{% endblock %}

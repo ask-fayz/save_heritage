@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}SAVE Heritage{% endblock %}</title>
+  <meta name="description" content="{% block description %}Smart Archive for Virtual Exploration of Heritage: how places looked, what they mean to people, and what we could lose.{% endblock %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/app.css?v={{ static_version }}">
+  {% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}" {% block body_attrs %}{% endblock %}>
+  <a class="visually-hidden" href="#main">{{ t('skip') }}</a>
+  <header class="site-header">
+    <a href="/?lang={{ lang }}" class="logo" aria-label="SAVE Heritage home"><b>SAVE</b><span>Heritage</span></a>
+    <nav class="nav" aria-label="Main">
+      {% block nav %}
+      <a href="/archive?lang={{ lang }}">{{ t('archive') }}</a>
+      {% endblock %}
+    </nav>
+    <details class="language-menu">
+      <summary aria-label="{{ t('language') }}"><span aria-hidden="true">◎</span> {{ lang|upper }} <span aria-hidden="true">⌄</span></summary>
+      <nav aria-label="{{ t('language') }}">{% for code, label in languages.items() %}<a href="{{ language_urls[code] }}" lang="{{ code }}" hreflang="{{ code }}" {% if lang == code %}aria-current="true"{% endif %}>{{ label }}{% if lang == code %} ✓{% endif %}</a>{% endfor %}</nav>
+    </details>
+  </header>
+
+  <main id="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div>© 2026 Safe Heritage</div>
+      <div class="row">
+        <span>Created by House of Scholars</span>
+        <a href="https://github.com/fur1aa/Preservation-Platform" rel="noopener" target="_blank">GitHub</a>
+        <a href="/admin">{{ t('curators') }}</a>
+      </div>
+    </div>
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ t('working') }} · Safe Heritage{% endblock %}
+
+{% block content %}
+<section class="narrow" style="padding-top: 70px;">
+  <p class="eyebrow" style="color: var(--accent); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-size: .75rem;">
+    {{ t('working') }}
+  </p>
+  <h1 style="font-size: 2.4rem;" id="job-title">
+    {% if job.status == 'done' %}{{ t('done') }}{% elif job.status == 'failed' %}{{ t('failed') }}{% else %}{{ t('working') }}{% endif %}
+  </h1>
+  {% if job.input.url %}<p class="muted small">{{ job.input.url }}</p>{% endif %}
+
+  <ol class="steps" id="job-steps" aria-live="polite">
+    {% for step in job.steps %}
+    <li class="{{ step.state }}"><span class="icon" aria-hidden="true">{{ {'done': '✓', 'warning': '!', 'failed': '×'}.get(step.state, '') }}</span><div><div>{{ step.label }}</div>{% if step.note %}<div class="note">{{ step.note }}</div>{% endif %}</div></li>
+    {% endfor %}
+  </ol>
+
+  <div id="job-error" class="alert alert-error" {% if job.status != 'failed' %}hidden{% endif %}>{{ job.error }}</div>
+  <div id="job-done" class="row" {% if job.status != 'done' %}hidden{% endif %}>
+    <a id="job-link" class="btn btn-accent" href="{% if job.result.site_slug %}/site/{{ job.result.site_slug }}{% if job.result.story %}/story{% endif %}?lang={{ lang }}{% else %}/admin{% endif %}">{{ t('open') }}</a>
+    <a class="btn btn-outline" href="/?lang={{ lang }}">{{ t('back') }}</a>
+  </div>
+  <p class="muted small" id="job-hint">{{ t('wait') }}</p>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>window.SAVE_JOB = {{ {"id": job.id, "status": job.status, "kind": job.kind, "lang": lang, "done": t("done"), "failed": t("failed")} | tojson }};</script>
+<script src="/static/js/job.js?v={{ static_version }}"></script>
+{% endblock %}

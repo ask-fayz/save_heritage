@@ -1,0 +1,50 @@
+[
+  {
+    "provider": "commons",
+    "provider_id": "File:HK SunBeamTheatre.jpg",
+    "title": "Sunbeam Theatre exterior, 2007",
+    "description": "Sunbeam Theatre exterior, 2007",
+    "author": "Chong Fat",
+    "year": 2007,
+    "date_text": "2007-11-05",
+    "year_source": "metadata",
+    "license": "Public domain",
+    "license_url": "",
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:HK_SunBeamTheatre.jpg",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/16/HK_SunBeamTheatre.jpg",
+    "thumb_url": "https://upload.wikimedia.org/wikipedia/commons/1/16/HK_SunBeamTheatre.jpg",
+    "status": "approved"
+  },
+  {
+    "provider": "commons",
+    "provider_id": "File:HK SunBeamTheatre 2008.JPG",
+    "title": "Sunbeam Theatre, 2008",
+    "description": "Sunbeam Theatre, 2008",
+    "author": "Chong Fat",
+    "year": 2008,
+    "date_text": "2008-05-29",
+    "year_source": "metadata",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:HK_SunBeamTheatre_2008.JPG",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9d/HK_SunBeamTheatre_2008.JPG",
+    "thumb_url": "https://upload.wikimedia.org/wikipedia/commons/9/9d/HK_SunBeamTheatre_2008.JPG",
+    "status": "approved"
+  },
+  {
+    "provider": "commons",
+    "provider_id": "File:HK North Point 新光戲院 2院 Sunbeam Theatre House 1 interior.JPG",
+    "title": "Sunbeam Theatre auditorium, 2009",
+    "description": "Sunbeam Theatre auditorium, 2009",
+    "author": "Npsbeamt",
+    "year": 2009,
+    "date_text": "2009-09-26",
+    "year_source": "metadata",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:HK_North_Point_%E6%96%B0%E5%85%89%E6%88%B2%E9%99%A2_2%E9%99%A2_Sunbeam_Theatre_House_1_interior.JPG",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f3/HK_North_Point_%E6%96%B0%E5%85%89%E6%88%B2%E9%99%A2_2%E9%99%A2_Sunbeam_Theatre_House_1_interior.JPG",
+    "thumb_url": "https://upload.wikimedia.org/wikipedia/commons/f/f3/HK_North_Point_%E6%96%B0%E5%85%89%E6%88%B2%E9%99%A2_2%E9%99%A2_Sunbeam_Theatre_House_1_interior.JPG",
+    "status": "approved"
+  }
+]

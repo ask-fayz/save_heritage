@@ -1,0 +1,143 @@
+{% extends "admin/base_admin.html" %}
+{% import "partials/macros.html" as m with context %}
+{% set has_3d = maps_enabled and site.latitude is not none %}
+
+
+
+{% block content %}
+<section class="container" style="padding-top: 40px;">
+  <div class="spread">
+    <div>
+      <p class="small muted" style="margin: 0;"><a href="/admin">Dashboard</a> / {{ site.slug }}</p>
+      <h1 style="font-size: 2.4rem;">{{ site.title }}</h1>
+    </div>
+    <div class="row">
+      <a class="btn btn-outline btn-sm" href="/site/{{ site.slug }}">Open public page</a>
+      {% for action, label in [('photos', 'Find photos'), ('news', 'Check news')] %}
+      <form class="inline" method="post" action="/admin/sites/{{ site.slug }}/actions/{{ action }}">{{ m.csrf() }}<button class="btn btn-ghost btn-sm">{{ label }}</button></form>
+      {% endfor %}
+      {% if site.source_url %}
+      <form class="inline" method="post" action="/admin/sites/{{ site.slug }}/actions/regenerate" onsubmit="return confirm('Regenerate the text, sources and AI chronicle from the source URL? Curator events, photos, memories are kept.');">
+        {{ m.csrf() }}<button class="btn btn-sm">Regenerate record</button></form>
+      {% endif %}
+    </div>
+  </div>
+  {% if request.query_params.get('saved') %}<div class="alert alert-ok" style="margin-top: 16px;">Saved.</div>{% endif %}
+
+  {# ---------------------------------------------------------------- details #}
+  <form class="panel" method="post" action="/admin/sites/{{ site.slug }}" style="margin-top: 24px;">
+    {{ m.csrf() }}
+    <div class="grid-2" style="gap: 14px;">
+      <div class="field"><label for="title">Title</label><input id="title" type="text" name="title" value="{{ site.title }}" required></div>
+      <div class="field"><label for="native_name">Native name</label><input id="native_name" type="text" name="native_name" value="{{ site.native_name }}"></div>
+      <div class="field"><label for="location_label">Location label</label><input id="location_label" type="text" name="location_label" value="{{ site.location_label }}"></div>
+      <div class="field">
+        <label>Coordinates <span class="muted">(source: {{ site.coord_source }})</span></label>
+        <div class="row" style="flex-wrap: nowrap;">
+          <input type="text" name="latitude" value="{{ site.latitude if site.latitude is not none else '' }}" placeholder="Latitude" aria-label="Latitude" inputmode="decimal">
+          <input type="text" name="longitude" value="{{ site.longitude if site.longitude is not none else '' }}" placeholder="Longitude" aria-label="Longitude" inputmode="decimal">
+        </div>
+      </div>
+    </div>
+    <div class="field"><label for="tagline">Tagline</label><input id="tagline" type="text" name="tagline" value="{{ site.tagline }}"></div>
+
+    <h2 class="subhead" style="margin-top: 10px;">Risk status</h2>
+    <div class="grid-2" style="gap: 14px;">
+      <div class="field">
+        <label for="risk_status">Status</label>
+        <select id="risk_status" name="risk_status">
+          {% for key, info in RISK_STATUSES.items() %}<option value="{{ key }}" {% if site.risk_status == key %}selected{% endif %}>{{ info.label }}: {{ info.description }}</option>{% endfor %}
+        </select>
+      </div>
+      <fieldset class="field" style="border: 0; padding: 0; margin: 0;">
+        <legend style="font-weight: 600; font-size: .9rem;">Reasons</legend>
+        <div class="row" style="gap: 4px 14px;">
+          {% for key, label in RISK_REASONS.items() %}
+          <label class="check" style="font-size: .88rem; margin: 0;"><input type="checkbox" name="risk_reasons" value="{{ key }}" {% if key in (site.risk_reasons or []) %}checked{% endif %}> {{ label }}</label>
+          {% endfor %}
+        </div>
+      </fieldset>
+    </div>
+    <div class="field"><label for="risk_summary">Summary</label><textarea id="risk_summary" name="risk_summary" style="min-height: 90px;">{{ site.risk_summary }}</textarea></div>
+    <div class="spread">
+      <label class="check" style="margin: 0;"><input type="checkbox" name="is_published" value="yes" {% if site.is_published %}checked{% endif %}> Published</label>
+      <button class="btn btn-accent" type="submit">Save details</button>
+    </div>
+  </form>
+
+  {# ---------------------------------------------------------------- chronicle #}
+  <h2 class="subhead" id="events">Chronicle</h2>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Year</th><th>Event</th><th>Origin</th><th></th></tr></thead>
+      <tbody>
+      {% for event in events %}
+      <tr>
+        <td>{{ event.year if event.year is not none else '—' }}<br><span class="small muted">{{ event.date_text }}</span></td>
+        <td><strong>{{ event.title }}</strong> <span class="pill">{{ EVENT_KINDS.get(event.kind, event.kind) }}</span><br><span class="small">{{ event.description }}</span></td>
+        <td><span class="pill">{{ event.origin }}</span></td>
+        <td><form class="inline" method="post" action="/admin/events/{{ event.id }}/delete" onsubmit="return confirm('Delete this event?');">{{ m.csrf() }}<button class="btn btn-ghost btn-sm">Delete</button></form></td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <form class="panel" method="post" action="/admin/sites/{{ site.slug }}/events" style="margin-top: 16px;">
+    {{ m.csrf() }}
+    <strong>Add an event</strong>
+    <div class="grid-3" style="gap: 12px; margin-top: 12px;">
+      <div class="field"><label for="ev-year">Year</label><input id="ev-year" type="number" name="year"></div>
+      <div class="field"><label for="ev-date">Date text</label><input id="ev-date" type="text" name="date_text" placeholder="March 2025"></div>
+      <div class="field"><label for="ev-kind">Kind</label><select id="ev-kind" name="kind">{% for key, label in EVENT_KINDS.items() %}<option value="{{ key }}">{{ label }}</option>{% endfor %}</select></div>
+    </div>
+    <div class="field"><label for="ev-title">Title</label><input id="ev-title" type="text" name="title" required></div>
+    <div class="field"><label for="ev-desc">Description</label><input id="ev-desc" type="text" name="description"></div>
+    <div class="grid-2" style="gap: 12px;">
+      <div class="field"><label for="ev-src">Source link</label><input id="ev-src" type="url" name="source_url"></div>
+      <div class="field"><label for="ev-srct">Source title</label><input id="ev-srct" type="text" name="source_title"></div>
+    </div>
+    <button class="btn btn-sm" type="submit">Add event</button>
+  </form>
+
+  {# ---------------------------------------------------------------- photos #}
+  <h2 class="subhead" id="photos">Photos</h2>
+  <p class="muted">{{ photos|length }} published · {{ pending_photos|length }} waiting (<a href="/admin/moderation#photos">review</a>) · {{ hidden_photos|length }} hidden</p>
+  {% if photos %}
+  <div class="photo-grid">
+    {% for photo in photos %}
+    <figure>
+      <img src="{{ photo.thumb_url or photo.image_url }}" alt="" loading="lazy">
+      <figcaption>{{ photo.year or 'undated' }} · {{ photo.title[:60] }}<br>
+
+        <form class="inline" method="post" action="/admin/moderate/photos/{{ photo.id }}/reject">{{ m.csrf() }}<button class="btn btn-ghost btn-sm">Hide</button></form>
+      </figcaption>
+    </figure>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if hidden_photos %}
+  <details style="margin-top: 16px;"><summary>Hidden photos ({{ hidden_photos|length }}), including those AI marked as unrelated</summary>
+    <div class="photo-grid" style="margin-top: 12px;">
+      {% for photo in hidden_photos %}
+      <figure>
+        <img src="{{ photo.thumb_url or photo.image_url }}" alt="" loading="lazy">
+        <figcaption>{{ photo.title[:60] }}<br><span class="small">{{ photo.relevance_note }}</span><br>
+          <form class="inline" method="post" action="/admin/moderate/photos/{{ photo.id }}/approve">{{ m.csrf() }}<button class="btn btn-ghost btn-sm">Publish</button></form>
+        </figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+  </details>
+  {% endif %}
+
+  <div><div>
+      <h2 class="subhead">News for this site</h2>
+      {% for item in news %}
+      <p class="small"><span class="pill">{{ item.state }}</span> <a href="{{ item.url }}" rel="noopener nofollow" target="_blank">{{ item.title }}</a> <span class="muted">{{ item.published_at }}</span></p>
+      {% else %}<p class="muted">None yet.</p>{% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+
