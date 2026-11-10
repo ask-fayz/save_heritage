@@ -1,6 +1,7 @@
 """Template rendering and request-scoped helpers shared by all routers."""
 
 from collections.abc import Iterator
+from hashlib import sha256
 from pathlib import Path
 
 from fastapi import Request
@@ -13,7 +14,14 @@ from app.models import EVENT_KINDS, RISK_REASONS, RISK_STATUSES, SUPPORTED_LANGU
 from app.security import csrf_token_for
 
 TEMPLATES_DIR = Path(__file__).parent / "templates"
-STATIC_VERSION = "exterior-3d-1"
+# Change asset URLs whenever shipped CSS or JavaScript changes.
+_STATIC_DIR = Path(__file__).parent / "static"
+_asset_hash = sha256()
+for _asset in sorted(_STATIC_DIR.rglob("*")):
+    if _asset.is_file() and _asset.suffix in {".css", ".js"}:
+        _asset_hash.update(_asset.relative_to(_STATIC_DIR).as_posix().encode())
+        _asset_hash.update(_asset.read_bytes())
+STATIC_VERSION = _asset_hash.hexdigest()[:16]
 
 
 def _context(request: Request) -> dict:

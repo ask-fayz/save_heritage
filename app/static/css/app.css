@@ -593,7 +593,7 @@ body.site-theme .chip-link:hover { border-color: var(--accent-gold); color: var(
 .language-menu nav a { display:block; padding:10px 12px; border-radius:7px; text-decoration:none; }
 .language-menu nav a:hover,
 .language-menu nav a:focus-visible,
-.language-menu nav a[aria-current="true"] { background:var(--ink); color:var(--paper); }
+.language-menu nav a[aria-current="true"] { background:#EFE9E0; color:#1A1A1A; }
 .language-menu nav a[aria-current="true"] { font-weight:600; }
 .editorial-chapter { display:grid; grid-template-columns:1fr 1fr; gap:clamp(24px,5vw,72px); align-items:center; margin:56px 0 80px; }
 .editorial-chapter:nth-of-type(even) .editorial-image { order:2; }
