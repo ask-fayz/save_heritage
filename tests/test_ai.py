@@ -79,3 +79,81 @@ def test_disabled_without_key(settings):
     assert not ai.enabled
     with pytest.raises(AIError):
         _ = ai.client
+
+
+@pytest.mark.parametrize("code", [500, 502, 503, 504])
+def test_transient_api_failure_recovers(settings, monkeypatch, code):
+    from google.genai import errors
+    from unittest.mock import Mock
+
+    ai, models = make_ai(settings, [])
+    models.generate_content = Mock(side_effect=[
+        errors.APIError(code, {"error": {"code": code, "message": "busy"}}),
+        text_response(MEMORY_JSON),
+    ])
+    sleep = Mock()
+    monkeypatch.setattr("app.services.ai.time.sleep", sleep)
+    assert ai._json("test", MemoryAnalysis, "test").language == "yue"
+    assert models.generate_content.call_count == 2
+    sleep.assert_called_once()
+
+
+@pytest.mark.parametrize("code", [400, 403, 429, 503])
+def test_errors_are_bounded_and_do_not_expose_provider_payload(settings, monkeypatch, code):
+    from google.genai import errors
+    from unittest.mock import Mock
+
+    ai, models = make_ai(settings, [])
+    models.generate_content = Mock(side_effect=errors.APIError(code, {
+        "error": {"code": code, "message": "sensitive-provider-payload"},
+    }))
+    monkeypatch.setattr("app.services.ai.time.sleep", Mock())
+    with pytest.raises(AIError) as caught:
+        ai.research("Test", "Test")
+    assert "sensitive-provider-payload" not in str(caught.value)
+    assert models.generate_content.call_count == (3 if code == 503 else 1)
+
+
+@pytest.mark.parametrize("quota_id,quota_value,delay,expected_calls", [
+    ("RequestsPerMinute", "10", "2s", 2),
+    ("RequestsPerDay", "20", "2s", 1),
+    ("RequestsPerMinute", "0", "2s", 1),
+    ("RequestsPerMinute", "10", "60s", 1),
+])
+def test_quota_retry_respects_provider_delay(settings, monkeypatch, quota_id, quota_value, delay, expected_calls):
+    from google.genai import errors
+    from unittest.mock import Mock
+
+    ai, models = make_ai(settings, [])
+    models.generate_content = Mock(side_effect=[errors.APIError(429, {"error": {
+        "code": 429, "message": "quota", "details": [
+            {"@type": "type.googleapis.com/google.rpc.RetryInfo", "retryDelay": delay},
+            {"@type": "type.googleapis.com/google.rpc.QuotaFailure", "violations": [
+                {"quotaId": quota_id, "quotaValue": quota_value},
+            ]},
+        ],
+    }}), text_response("Research")])
+    sleep = Mock()
+    monkeypatch.setattr("app.services.ai.time.sleep", sleep)
+    if expected_calls == 2:
+        assert ai.research("Test", "Test").text == "Research"
+        sleep.assert_called_once_with(2.0)
+    else:
+        with pytest.raises(AIError, match="quota"):
+            ai.research("Test", "Test")
+        sleep.assert_not_called()
+    assert models.generate_content.call_count == expected_calls
+
+
+def test_search_model_override(settings):
+    settings.gemini_search_model = "test-search-model"
+    ai, models = make_ai(settings, [text_response("Research")])
+    ai.research("Test", "Test")
+    assert models.calls[0]["model"] == "test-search-model"
+
+
+def test_client_retry_and_timeout_settings(settings):
+    settings.gemini_api_key = "test"
+    ai = GeminiAI(settings)
+    assert ai.client is not None
+    ai.client.close()

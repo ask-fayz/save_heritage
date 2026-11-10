@@ -21,7 +21,7 @@
       {% endblock %}
     </nav>
     <details class="language-menu">
-      <summary aria-label="{{ t('language') }}"><span aria-hidden="true">◎</span> {{ lang|upper }} <span aria-hidden="true">⌄</span></summary>
+      <summary aria-label="{{ t('language') }}"><span aria-hidden="true">◎</span> {{ languages[lang] }}</summary>
       <nav aria-label="{{ t('language') }}">{% for code, label in languages.items() %}<a href="{{ language_urls[code] }}" lang="{{ code }}" hreflang="{{ code }}" {% if lang == code %}aria-current="true"{% endif %}>{{ label }}{% if lang == code %} ✓{% endif %}</a>{% endfor %}</nav>
     </details>
   </header>
@@ -32,7 +32,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <div>© 2026 Safe Heritage</div>
+      <div>© 2026 SAVE Heritage</div>
       <div class="row">
         <span>Created by House of Scholars</span>
         <a href="https://github.com/fur1aa/Preservation-Platform" rel="noopener" target="_blank">GitHub</a>

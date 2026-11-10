@@ -1,6 +1,8 @@
 """Google Gemini: source-grounded extraction, research, memory processing, news triage, AI Keeper and labelled hypotheses."""
 
 import logging
+import random
+import time
 from dataclasses import dataclass
 from typing import Literal, TypeVar
 
@@ -275,9 +277,65 @@ class GeminiAI:
             raise AIError("GEMINI_API_KEY is not configured.")
         if self._client is None:
             from google import genai
+            from google.genai import types
 
-            self._client = genai.Client(api_key=self.settings.gemini_api_key)
+            self._client = genai.Client(
+                api_key=self.settings.gemini_api_key,
+                http_options=types.HttpOptions(
+                    timeout=self.settings.gemini_timeout_seconds * 1000,
+                    retry_options=types.HttpRetryOptions(attempts=1),
+                ),
+            )
         return self._client
+
+    def _generate(self, *, model, contents, config):
+        """Bounded retries; never repeatedly spend requests on a known hard quota."""
+        from google.genai import errors
+
+        for attempt in range(self.settings.gemini_max_attempts):
+            try:
+                return self.client.models.generate_content(model=model, contents=contents, config=config)
+            except errors.APIError as exc:
+                code = exc.code
+                payload = getattr(exc, "details", None) or {}
+                error = payload.get("error", payload) if isinstance(payload, dict) else {}
+                details = error.get("details", []) or []
+                retry_delay = None
+                hard_quota = False
+                for detail in details:
+                    if not isinstance(detail, dict):
+                        continue
+                    if detail.get("@type", "").endswith("RetryInfo"):
+                        try:
+                            retry_delay = max(0.0, float(detail.get("retryDelay", "").rstrip("s")))
+                        except (ValueError, TypeError, AttributeError):
+                            pass
+                    for violation in detail.get("violations", []) or []:
+                        quota_id = str(violation.get("quotaId", "")).lower()
+                        hard_quota |= "perday" in quota_id or str(violation.get("quotaValue")) == "0"
+                transient = code in (500, 502, 503, 504) or (
+                    code == 429 and retry_delay is not None and not hard_quota
+                )
+                delay = retry_delay if retry_delay is not None else min(2 ** (attempt + 1), 16) + random.random()
+                if transient and delay <= 30 and attempt + 1 < self.settings.gemini_max_attempts:
+                    log.warning("Gemini model=%s status=%s attempt=%s; retry in %.1fs", model, code, attempt + 1, delay)
+                    time.sleep(delay)
+                    continue
+                if code == 429:
+                    message = (
+                        "Gemini request or token quota exceeded (429). Check this API key's project "
+                        "limits and billing in Google AI Studio; a new key in the same project does not reset quota."
+                    )
+                elif code in (500, 502, 503, 504):
+                    message = "Gemini is temporarily unavailable after bounded retries. Please try again later."
+                elif code in (401, 403):
+                    message = "Gemini access denied. Check the server API key and its project permissions."
+                elif code == 404:
+                    message = f"Gemini model '{model}' is unavailable. Check the configured model name."
+                else:
+                    message = f"Gemini request failed (HTTP {code}). Check server configuration and request compatibility."
+                log.warning("Gemini request failed: model=%s status=%s", model, code)
+                raise AIError(message) from exc
 
     def _json(self, contents, schema: type[T], system: str, temperature: float = 0.2) -> T:
         from google.genai import errors, types
@@ -291,7 +349,7 @@ class GeminiAI:
         last_error: Exception | None = None
         for _ in range(2):
             try:
-                response = self.client.models.generate_content(
+                response = self._generate(
                     model=self.settings.gemini_model, contents=contents, config=config
                 )
                 if isinstance(response.parsed, schema):
@@ -311,8 +369,8 @@ class GeminiAI:
 
         lang_label = SUPPORTED_LANGUAGES.get(lang, SUPPORTED_LANGUAGES["en"])["label"]
         try:
-            response = self.client.models.generate_content(
-                model=self.settings.gemini_model,
+            response = self._generate(
+                model=self.settings.gemini_search_model or self.settings.gemini_model,
                 contents=RESEARCH_PROMPT.format(
                     title=title,
                     location=location or "location unknown",
@@ -399,7 +457,7 @@ class GeminiAI:
         contents: list = [types.Part.from_bytes(data=data, mime_type=mime) for data, mime in images]
         contents.append(prompt)
         try:
-            response = self.client.models.generate_content(
+            response = self._generate(
                 model=self.settings.gemini_image_model,
                 contents=contents,
                 config=types.GenerateContentConfig(response_modalities=["TEXT", "IMAGE"]),

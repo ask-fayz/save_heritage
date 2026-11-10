@@ -591,7 +591,10 @@ body.site-theme .chip-link:hover { border-color: var(--accent-gold); color: var(
 .language-menu summary::-webkit-details-marker { display:none; }
 .language-menu nav { position:absolute; top:calc(100% + 10px); right:0; min-width:155px; background:var(--paper); color:var(--ink); border:1px solid var(--line); padding:6px; border-radius:12px; box-shadow:var(--shadow); z-index:100; }
 .language-menu nav a { display:block; padding:10px 12px; border-radius:7px; text-decoration:none; }
-.language-menu nav a:hover,.language-menu nav a[aria-current] { background:var(--paper-2); }
+.language-menu nav a:hover,
+.language-menu nav a:focus-visible,
+.language-menu nav a[aria-current="true"] { background:var(--ink); color:var(--paper); }
+.language-menu nav a[aria-current="true"] { font-weight:600; }
 .editorial-chapter { display:grid; grid-template-columns:1fr 1fr; gap:clamp(24px,5vw,72px); align-items:center; margin:56px 0 80px; }
 .editorial-chapter:nth-of-type(even) .editorial-image { order:2; }
 .editorial-chapter:not(:has(.editorial-image)) { display:block; max-width:740px; margin-inline:auto; }

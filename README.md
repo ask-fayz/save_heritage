@@ -151,3 +151,26 @@ python -m app.cli import-legacy archive_data.json
 ---
 
 Created by House of Scholars.
+
+### Gemini API: quota and temporary failures
+
+`429 RESOURCE_EXHAUSTED` indicates a request/token/quota limit. Check the project
+that owns the **Render environment's API key** in Google AI Studio:
+https://aistudio.google.com/usage and https://aistudio.google.com/rate-limit.
+Confirm the billing tier and the limits for both text generation and Google Search
+grounding. A new key in the same project does not provide a separate quota.
+A 429 alone does not prove that the project uses the free tier.
+
+`503 UNAVAILABLE` indicates temporary model unavailability. The application retries
+transient 5xx responses up to `GEMINI_MAX_ATTEMPTS` total attempts (default 3), with
+exponential backoff and jitter. SDK retries are disabled to avoid multiplying attempts.
+429 is retried only when the provider supplies a delay of at most 30 seconds and
+does not identify a daily or zero quota. Request timeout is controlled by
+`GEMINI_TIMEOUT_SECONDS` (default 90, per attempt).
+
+On Render, verify `GEMINI_MODEL` and optionally `GEMINI_SEARCH_MODEL` against models
+available to your project. An empty search model uses `GEMINI_MODEL`.
+If only search grounding has no quota, set `USE_SEARCH_GROUNDING=false` to omit that
+optional step; record generation still requires its own available Gemini quota.
+Update the Render environment and deploy the changed code before testing again.
+Do not paste API keys into logs or chat. Local `.env` changes do not update Render.

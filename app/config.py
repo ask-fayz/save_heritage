@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     # --- AI (Google Gemini) ---
     gemini_api_key: str = Field(default="", validation_alias=AliasChoices("GEMINI_API_KEY", "GOOGLE_API_KEY"))
     gemini_model: str = "gemini-2.5-flash"
+    gemini_max_attempts: int = Field(default=3, ge=1, le=5)
+    gemini_timeout_seconds: int = Field(default=90, ge=1, le=300)
+    gemini_search_model: str = ""  # Empty uses GEMINI_MODEL.
     gemini_image_model: str = "gemini-2.5-flash-image"
     # Adds a Google Search grounded research step so facts can cite web pages beyond the submitted URL.
     use_search_grounding: bool = True
