@@ -20,7 +20,7 @@
   <div id="job-error" class="alert alert-error" {% if job.status != 'failed' %}hidden{% endif %}>{{ job.error }}</div>
   <div id="job-done" class="row" {% if job.status != 'done' %}hidden{% endif %}>
     <a id="job-link" class="btn btn-accent" href="{% if job.result.site_slug %}/site/{{ job.result.site_slug }}{% if job.result.story %}/story{% endif %}?lang={{ lang }}{% else %}/admin{% endif %}">{{ t('open') }}</a>
-    <a class="btn btn-outline" href="/?lang={{ lang }}">{{ t('back') }}</a>
+    <a class="btn btn-outline" href="/explore?lang={{ lang }}">{{ t('back') }}</a>
   </div>
   <p class="muted small" id="job-hint">{{ t('wait') }}</p>
 </section>

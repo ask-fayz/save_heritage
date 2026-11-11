@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}SAVE Heritage · {{ t('about_nav') }}{% endblock %}
+{% block description %}{{ t('about_intro') }}{% endblock %}
+{% block content %}
+<div class="container about-page">
+  <section class="about-hero">
+    <div><p class="brand-eyebrow">{{ t('about_eyebrow') }}</p><h1>{{ t('about_title') }}</h1><p class="about-lede">{{ t('about_intro') }}</p><div class="about-actions"><a class="btn btn-accent" href="/explore?lang={{ lang }}">{{ t('start') }} <span aria-hidden="true">→</span></a><a class="about-text-link" href="/team?lang={{ lang }}">{{ t('about_secondary') }}</a></div></div>
+    <figure class="about-brand"><img src="/static/images/save-heritage-original.png" width="1254" height="1254" alt="{{ t('logo_alt') }}"></figure>
+  </section>
+  <section class="about-why"><div><p class="brand-eyebrow">{{ t('why_label') }}</p><h2>{{ t('why_title') }}</h2></div><p>{{ t('why_body') }}</p></section>
+  <section class="about-how"><p class="brand-eyebrow">{{ t('how_label') }}</p><h2>{{ t('how_title') }}</h2><div class="about-steps">
+  {% for key in ['story', 'memory', 'dim'] %}<article><span class="step-number" aria-hidden="true">0{{ loop.index }}</span><h3>{{ t(key ~ '_title') }}</h3><p>{{ t(key ~ '_body') }}</p></article>{% endfor %}
+  </div></section>
+  <section class="about-future"><div><p class="brand-eyebrow">{{ t('future_label') }}</p><h2>{% for line in t('future_title').split('\n') %}<span class="future-title-line">{{ line }}</span>{% endfor %}</h2></div><div><p>{{ t('future_body') }}</p><p class="future-note">{{ t('future_note') }}</p></div></section>
+  <section class="about-cta"><h2>{{ t('cta_title') }}</h2><p>{{ t('cta_body') }}</p><a class="btn btn-accent" href="/explore?lang={{ lang }}">{{ t('start') }} <span aria-hidden="true">→</span></a></section>
+</div>
+{% endblock %}

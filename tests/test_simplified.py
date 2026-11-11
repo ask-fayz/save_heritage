@@ -2,7 +2,7 @@ from tests.conftest import csrf_token, ADMIN
 
 
 def test_main_experience_is_simplified(client):
-    home = client.get('/').text
+    home = client.get('/explore').text
     assert 'language-menu' in home and 'lang-picker' not in home
     assert 'heritage-map-data' in home
     page = client.get('/site/sunbeam').text

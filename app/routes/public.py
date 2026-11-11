@@ -56,6 +56,16 @@ def _map_sites_payload(sites: list[dict]) -> list[dict]:
 
 
 @router.get("/")
+def about(request: Request):
+    return render(request, "about.html")
+
+
+@router.get("/team")
+def team(request: Request):
+    return render(request, "team.html")
+
+
+@router.get("/explore")
 def home(request: Request, conn=Depends(get_db)):
     sites = repo.list_sites(conn)
     lang = _req_lang(request)

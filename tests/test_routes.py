@@ -5,7 +5,7 @@ from tests.conftest import ADMIN, PNG_1PX, csrf_token
 
 
 def test_public_pages_render_seeded_site(client):
-    home = client.get("/")
+    home = client.get("/explore")
     assert home.status_code == 200 and "Sunbeam Theatre" in home.text
     site = client.get("/site/sunbeam")
     assert site.status_code == 200
@@ -19,7 +19,7 @@ def test_public_pages_render_seeded_site(client):
 
 
 def test_generate_validates_url_and_csrf(client):
-    token = csrf_token(client, "/")
+    token = csrf_token(client, "/explore")
     assert client.post("/generate", data={"url": "https://example.org"}).status_code == 403  # no CSRF token
     response = client.post("/generate", data={"url": "http://169.254.169.254/latest", "csrf_token": token})
     assert response.status_code == 400
@@ -28,7 +28,7 @@ def test_generate_validates_url_and_csrf(client):
 
 def test_generation_rate_limit(client, settings):
     settings.generation_rate_per_hour = 2
-    token = csrf_token(client, "/")
+    token = csrf_token(client, "/explore")
     for _ in range(2):
         client.post("/generate", data={"url": "ftp://bad", "csrf_token": token})
     assert client.post("/generate", data={"url": "ftp://bad", "csrf_token": token}).status_code == 429
@@ -136,7 +136,7 @@ def test_csrf_cookie_is_http_only(client):
 
 
 def test_interactive_map_and_preservation_passport(client):
-    home = client.get("/")
+    home = client.get("/explore")
     assert home.status_code == 200
     assert 'id="heritage-map"' in home.text
     assert '"slug": "sunbeam"' in home.text

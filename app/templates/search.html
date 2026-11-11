@@ -3,7 +3,7 @@
 {% block title %}{{ t('choose') }} · SAVE Heritage{% endblock %}
 {% block content %}
 <section class="container search-results">
-  <a href="/?lang={{ lang }}">← {{ t('back') }}</a>
+  <a href="/explore?lang={{ lang }}">← {{ t('back') }}</a>
   <h1>{{ t('choose') }}</h1><p class="lede">{{ query }}</p><p>{{ t('choose_hint') }}</p>
   {% if search_error %}<p class="alert alert-error" role="alert">{{ search_error }}</p>{% endif %}
   <div class="grid-2">

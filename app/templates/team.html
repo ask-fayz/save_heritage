@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ t('team_team') }} · SAVE Heritage{% endblock %}
+{% block content %}
+<div class="container">
+  <section class="team-hero"><p class="brand-eyebrow">{{ t('team_eyebrow') }}</p><h1>{{ t('team_intro') }}</h1><p class="lede">{{ t('team_sub') }}</p></section>
+  <section class="team-people" aria-label="{{ t('team_team') }}">
+    {% for name, image in [('Askar Fayzullin','askar.jpg'), ('Chan Jessica Yin-Yu','jessica.jpg'), ('Yoshida Emi','emi.jpg')] %}
+    <article class="team-person"><img class="team-portrait" src="/static/images/{{ image }}" alt="{{ name }}" width="180" height="205"><h2>{{ name }}</h2><p class="team-degree">{{ t('team_degree_' ~ loop.index0) }}</p><p class="team-expertise"><strong>{{ t('team_focus') }}</strong>{{ t('team_focus_' ~ loop.index0) }}</p></article>
+    {% endfor %}
+  </section>
+  <section class="team-support"><h2>{{ t('team_support') }}</h2><div><p>{{ t('team_description') }}</p><a class="btn btn-accent" href="https://sa.hkbu.edu.hk/en/lqc/leadership-development/House-of-Scholars.html?tabs1=introduction-tab#accordion-4bd98b37d8-item-d944b0ed62" target="_blank" rel="noopener noreferrer">{{ t('team_learn') }} <span aria-hidden="true">↗</span></a></div></section>
+</div>
+{% endblock %}

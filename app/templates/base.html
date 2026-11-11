@@ -17,6 +17,8 @@
     <a href="/?lang={{ lang }}" class="logo" aria-label="SAVE Heritage home"><b>SAVE</b><span>Heritage</span></a>
     <nav class="nav" aria-label="Main">
       {% block nav %}
+      <a href="/?lang={{ lang }}">{{ t('about_nav') }}</a>
+      <a href="/explore?lang={{ lang }}">{{ t('start') }}</a>
       <a href="/archive?lang={{ lang }}">{{ t('archive') }}</a>
       {% endblock %}
     </nav>
@@ -33,11 +35,8 @@
   <footer class="site-footer">
     <div class="container">
       <div>© 2026 SAVE Heritage</div>
-      <div class="row">
-        <span>Created by House of Scholars</span>
-        <a href="https://github.com/fur1aa/Preservation-Platform" rel="noopener" target="_blank">GitHub</a>
-        <a href="/admin">{{ t('curators') }}</a>
-      </div>
+      <div class="footer-credit">{{ t('team_credit') }}</div>
+      <a class="footer-team" href="/team?lang={{ lang }}">{{ t('team_team') }}</a>
     </div>
   </footer>
   {% block scripts %}{% endblock %}

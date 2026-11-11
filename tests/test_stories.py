@@ -11,7 +11,7 @@ import pytest
 
 def test_languages_and_original_story(client):
     for lang, title in [('ru', 'У каждого места есть история.'), ('en', 'Every place has a story.'), ('zh', '每个地方都有故事。')]:
-        page = client.get('/?lang=' + lang)
+        page = client.get('/explore?lang=' + lang)
         assert page.status_code == 200 and title in page.text
         assert f'<html lang="{lang}">' in page.text
         assert 'type="text" name="url"' in page.text
@@ -20,7 +20,7 @@ def test_languages_and_original_story(client):
         assert 'A landmark on King' in page.text
         assert 'story-notice' in page.text
         assert 'https://en.wikipedia.org/wiki/Sunbeam_Theatre' in page.text
-    assert '<html lang="en">' in client.get('/?lang=bad').text
+    assert '<html lang="en">' in client.get('/explore?lang=bad').text
 
 
 def test_name_input_requires_explicit_choice(client, monkeypatch):
@@ -29,7 +29,7 @@ def test_name_input_requires_explicit_choice(client, monkeypatch):
         calls.append((query, lang))
         return [{'qid': 'Q123', 'label': 'Большой театр', 'description': 'Москва', 'url': 'https://ru.wikipedia.org/wiki/Большой_театр'}]
     monkeypatch.setattr(wikidata, 'search_places', search)
-    token = csrf_token(client, '/?lang=ru')
+    token = csrf_token(client, '/explore?lang=ru')
     response = client.post('/generate?lang=ru', data={'url': ' Большой театр ', 'lang': 'ru', 'csrf_token': token})
     assert response.status_code == 200
     assert 'Какое место вы имели в виду?' in response.text
@@ -38,7 +38,7 @@ def test_name_input_requires_explicit_choice(client, monkeypatch):
 
 
 def test_search_empty_and_unavailable(client, monkeypatch):
-    token = csrf_token(client, '/')
+    token = csrf_token(client, '/explore')
     monkeypatch.setattr(wikidata, 'search_places', lambda *args: [])
     response = client.post('/generate', data={'url': 'Unknown place', 'csrf_token': token})
     assert 'No places with a Wikipedia article found' in response.text
@@ -52,7 +52,7 @@ def test_search_empty_and_unavailable(client, monkeypatch):
 
 def test_generated_story_redirect_preserves_language(client, monkeypatch):
     monkeypatch.setattr(stories, 'generate_story', lambda ctx, url, lang: {'site_slug': 'sunbeam', 'story': True, 'lang': lang})
-    token = csrf_token(client, '/')
+    token = csrf_token(client, '/explore')
     response = client.post('/generate?lang=zh', data={'url': 'https://en.wikipedia.org/wiki/Sunbeam_Theatre', 'lang': 'zh', 'csrf_token': token})
     assert response.status_code == 200
     assert '/site/sunbeam/story?lang=zh' in response.text
@@ -91,7 +91,7 @@ def test_unknown_references_do_not_publish_translations(client, settings, monkey
 
 
 def test_unpublished_story_and_generation_permissions(client, db, settings):
-    token = csrf_token(client, '/')
+    token = csrf_token(client, '/explore')
     assert client.post('/site/sunbeam/story', data={'csrf_token': token}).status_code == 503
     settings.public_generation = False
     assert client.post('/generate', data={'url': 'Museum', 'csrf_token': token}).status_code == 403

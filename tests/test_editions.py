@@ -45,7 +45,7 @@ def test_partial_translation_is_not_saved(client,settings,monkeypatch):
 
 
 def test_globe_uses_local_assets(client):
-    html=client.get('/').text
+    html=client.get('/explore').text
     assert 'data-globe' in html
     assert 'cartocdn' not in html and 'leaflet' not in html.lower()
     assert client.get('/static/vendor/land-110m.json').status_code==200

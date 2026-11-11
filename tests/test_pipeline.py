@@ -183,7 +183,7 @@ def test_generated_place_persists_and_appears_on_map_after_restart(patched):
     assert job['status'] == 'done'
     for _ in range(2):
         with TestClient(create_app(patched, synchronous_jobs=True)) as client:
-            home = client.get('/')
+            home = client.get('/explore')
             payload = re.search(r'<script id="heritage-map-data" type="application/json">(.*?)</script>', home.text, re.S)
             markers = json.loads(payload.group(1))
             assert any(m['slug'] == 'old-mill' and m['latitude'] == 51.5 for m in markers)

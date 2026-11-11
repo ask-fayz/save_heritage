@@ -135,3 +135,132 @@ COPY.update({
 })
 
 COPY.update({'view_3d': {'en': 'Explore in 3D', 'ru': 'Посмотреть в 3D', 'zh': '探索三维视图'}, 'exterior_intro': {'en': 'Explore the exterior and its surroundings using Google’s available imagery. This is not a historical reconstruction; imagery dates and detail vary.', 'ru': 'Рассмотрите внешний вид и окружение по доступным данным Google. Это не историческая реконструкция: дата съёмки и детализация могут различаться.', 'zh': '使用 Google 的可用影像探索建筑外观及周边。此视图并非历史重建，影像日期与细节因地点而异。'}, 'load_3d': {'en': 'Load Google 3D view', 'ru': 'Открыть 3D-вид Google', 'zh': '加载 Google 三维视图'}, 'maps_unconfigured': {'en': 'The 3D view is not connected yet. You can already explore the archive and contribute photographs.', 'ru': '3D-просмотр пока не подключён. История и отправка фотографий уже доступны.', 'zh': '三维视图尚未连接，您仍可浏览档案并提交照片。'}, 'maps_no_coordinates': {'en': 'The location needs to be verified before a 3D view can be opened.', 'ru': 'Чтобы открыть 3D-вид, сначала нужно уточнить координаты места.', 'zh': '打开三维视图前需确认地点坐标。'}, 'maps_loading': {'en': 'Loading the map…', 'ru': 'Загружаем карту…', 'zh': '正在加载地图…'}, 'maps_error': {'en': 'The 3D view could not be loaded. This does not establish whether this building has 3D coverage. Please try again later.', 'ru': 'Не удалось загрузить 3D-вид. Это не означает, что у здания нет покрытия. Попробуйте позже.', 'zh': '三维视图加载失败。这并不意味着该建筑没有三维覆盖，请稍后重试。'}, 'maps_loaded': {'en': 'Map loaded. Building detail and coverage still need to be checked for this location.', 'ru': 'Карта загружена. Покрытие и детализацию конкретного здания ещё нужно проверить.', 'zh': '地图已加载，仍需确认该建筑的覆盖和细节。'}, 'reconstruction_title': {'en': 'Help document the exterior', 'ru': 'Помогите сохранить внешний облик', 'zh': '帮助记录建筑外观'}, 'reconstruction_help': {'en': 'If the map does not show the building or you have photographs of its earlier appearance, share them with the archive. Overlapping views of the front, sides and rear, with dates and sources, can support a future reconstruction. Reconstruction is not yet automated.', 'ru': 'Если карта не показывает здание или у вас есть фотографии его прежнего облика, поделитесь ими с архивом. Для будущей реконструкции нужны перекрывающиеся ракурсы фасада, боковых и задней сторон, даты и источники. Автоматическая реконструкция пока не подключена.', 'zh': '若地图未显示建筑，或您有其旧貌照片，欢迎分享。带有日期和来源的正面、侧面及背面重叠视角可支持未来重建。自动重建尚未启用。'}})
+
+
+# About and team pages.
+COPY.update({'about_nav': {'en': 'About', 'ru': 'О проекте', 'zh': '关于项目'},
+ 'start': {'en': 'Start exploring', 'ru': 'Начать исследование', 'zh': '开始探索'},
+ 'about_eyebrow': {'en': 'SMART ARCHIVE FOR VIRTUAL EXPLORATION OF HERITAGE',
+                   'ru': 'ЦИФРОВОЙ АРХИВ ДЛЯ ВИРТУАЛЬНОГО ИЗУЧЕНИЯ НАСЛЕДИЯ',
+                   'zh': '文化遗产虚拟探索智能档案'},
+ 'about_title': {'en': 'Places hold memories. Let’s keep them alive.',
+                 'ru': 'Места хранят воспоминания. Сохраним их вместе.',
+                 'zh': '地方承载记忆。让我们共同留住它们。'},
+ 'about_intro': {'en': 'SAVE Heritage brings together the stories, photographs and memories of places that '
+                       'matter — making cultural heritage easier to explore, share and preserve.',
+                 'ru': 'SAVE Heritage объединяет истории, фотографии и воспоминания о значимых местах, чтобы '
+                       'культурное наследие было проще изучать, сохранять и передавать другим.',
+                 'zh': 'SAVE Heritage 汇集重要场所的故事、照片与个人记忆，让文化遗产更容易被探索、分享和保存。'},
+ 'about_secondary': {'en': 'Meet the team', 'ru': 'Познакомиться с командой', 'zh': '认识我们的团队'},
+ 'why_label': {'en': 'WHY WE STARTED', 'ru': 'ПОЧЕМУ МЫ НАЧАЛИ', 'zh': '我们的初衷'},
+ 'why_title': {'en': 'A place is more than its buildings.',
+               'ru': 'Место — это больше, чем его здания.',
+               'zh': '一个地方，不只是建筑。'},
+ 'why_body': {'en': 'Its history lives in family albums, archive records and the memories of people who know '
+                    'it. These fragments are often scattered. We started SAVE Heritage to bring them '
+                    'together and make them part of a shared digital record.',
+              'ru': 'Его история живёт в семейных альбомах, архивных документах и воспоминаниях людей. Часто '
+                    'эти материалы разрозненны. Мы создали SAVE Heritage, чтобы собрать их вместе и сделать '
+                    'частью общего цифрового архива.',
+              'zh': '它的历史存在于家庭相册、档案文献，以及熟悉它的人们的记忆中。这些片段往往散落各处。我们创建 SAVE Heritage，希望将它们汇集起来，成为共同的数字档案。'},
+ 'how_label': {'en': 'EXPLORE · CONTRIBUTE · PRESERVE',
+               'ru': 'ИЗУЧАТЬ · ДЕЛИТЬСЯ · СОХРАНЯТЬ',
+               'zh': '探索 · 分享 · 保存'},
+ 'how_title': {'en': 'Every place has its own story.',
+               'ru': 'У каждого места — своя история.',
+               'zh': '每个地方，都有自己的故事。'},
+ 'story_title': {'en': 'Discover a place', 'ru': 'Откройте новое место', 'zh': '发现一个地方'},
+ 'story_body': {'en': 'Start with a place name or an article link. Explore a short illustrated story, then '
+                      'visit its dedicated page for historical context, photographs and sources.',
+                'ru': 'Начните с названия места или ссылки на статью. Прочитайте короткую историю с '
+                      'иллюстрациями, а затем откройте отдельную страницу с историческим контекстом, '
+                      'фотографиями и источниками.',
+                'zh': '从地点名称或文章链接开始，阅读简短的图文故事，再进入该地点的专属页面，了解历史背景、照片与资料来源。'},
+ 'memory_title': {'en': 'Add your memories', 'ru': 'Поделитесь воспоминаниями', 'zh': '分享您的记忆'},
+ 'memory_body': {'en': 'Share a photograph, a personal memory or new material through a place’s page. '
+                       'Contributions are reviewed before publication, helping the archive grow with care.',
+                 'ru': 'Добавьте фотографию, личное воспоминание или новые материалы на странице места. '
+                       'Перед публикацией материалы проходят проверку — так архив пополняется бережно и '
+                       'осмысленно.',
+                 'zh': '在地点页面分享照片、个人回忆或新资料。投稿经过审核后才会发布，让档案在审慎整理中不断丰富。'},
+ 'dim_title': {'en': 'See another dimension', 'ru': 'Посмотрите в новом измерении', 'zh': '从另一个维度了解'},
+ 'dim_body': {'en': 'Some places include a 3D view where suitable resources are available, offering another '
+                    'way to explore their architecture and surroundings.',
+              'ru': 'Для некоторых мест доступны 3D-виды на основе имеющихся ресурсов. Они дают ещё один '
+                    'способ познакомиться с архитектурой и окружением места.',
+              'zh': '部分地点在有合适资源的情况下提供三维视图，让您以另一种方式探索建筑及其周边环境。'},
+ 'future_label': {'en': 'LOOKING AHEAD', 'ru': 'НАШИ ПЛАНЫ', 'zh': '未来计划'},
+ 'future_title': {'en': 'More shared memories.\nA\u00a0richer digital future.',
+                  'ru': 'Больше воспоминаний. Полнее цифровой образ.',
+                  'zh': '更多共同记忆，更丰富的数字未来。'},
+ 'future_body': {'en': 'As the archive grows, we hope to explore 3D reconstruction and generation grounded '
+                       'in richer collections of photographs, documents and other evidence. This is a future '
+                       'direction: useful models will depend on the quality of the material, the tools and '
+                       'the resources available.',
+                 'ru': 'По мере роста архива мы планируем исследовать возможности 3D-реконструкции и '
+                       'генерации на основе более полных подборок фотографий, документов и других '
+                       'свидетельств. Это направление на будущее: качество моделей будет зависеть от '
+                       'собранных материалов, доступных инструментов и ресурсов.',
+                 'zh': '随着档案不断丰富，我们希望探索基于更多照片、文献和其他证据的三维重建与生成。这是未来的发展方向：有价值的模型将取决于资料质量，以及可用的工具和资源。'},
+ 'future_note': {'en': 'Today, every contribution helps build a fuller record of a place.',
+                 'ru': 'А уже сегодня каждый вклад помогает полнее сохранить историю места.',
+                 'zh': '而在今天，每一份分享都能帮助我们更完整地记录一个地方。'},
+ 'cta_title': {'en': 'Which place will you discover?', 'ru': 'Какое место вы откроете?', 'zh': '您想探索哪个地方？'},
+ 'cta_body': {'en': 'Explore its story. Share what you remember. Help preserve what matters.',
+              'ru': 'Изучите его историю. Поделитесь воспоминанием. Помогите сохранить важное.',
+              'zh': '了解它的故事，分享您的记忆，帮助保存珍贵的文化遗产。'},
+ 'logo_alt': {'en': 'SAVE Heritage — a classical arch connected by a network of nodes',
+              'ru': 'SAVE Heritage — классическая арка, соединённая сетью цифровых связей',
+              'zh': 'SAVE Heritage 标志：古典拱门与连接节点组成的网络'},
+ 'team_team': {'en': 'Team', 'ru': 'Команда', 'zh': '团队'},
+ 'team_eyebrow': {'en': 'THE PEOPLE BEHIND SAVE HERITAGE',
+                  'ru': 'ЛЮДИ, КОТОРЫЕ СОЗДАЮТ SAVE HERITAGE',
+                  'zh': 'SAVE HERITAGE 背后的团队'},
+ 'team_intro': {'en': 'Meet our team', 'ru': 'Наша команда', 'zh': '认识我们的团队'},
+ 'team_sub': {'en': 'Different disciplines. A shared commitment to preserving heritage.',
+              'ru': 'Разные дисциплины. Общее стремление сохранять наследие.',
+              'zh': '不同的专业，共同守护文化遗产。'},
+ 'team_focus': {'en': 'Focus', 'ru': 'Направления', 'zh': '专注领域'},
+ 'team_support': {'en': 'Supported by House of Scholars',
+                  'ru': 'При поддержке House of Scholars',
+                  'zh': '由 House of Scholars 支持'},
+ 'team_description': {'en': 'House of Scholars is a selective leadership development programme under the '
+                            'Leadership Qualities Centre at Hong Kong Baptist University. It aims to develop '
+                            'high-achieving students into future-shaping leaders who can design and '
+                            'implement solutions for global issues and social challenges. Through seed '
+                            'funding, tailored consultation, transdisciplinary collaboration, and access to '
+                            'university resources and networks, the programme supports students in '
+                            'transforming ideas into measurable and impactful projects.',
+                      'ru': 'House of Scholars — конкурсная программа развития лидерских качеств Центра '
+                            'лидерских качеств Гонконгского баптистского университета. Она помогает '
+                            'студентам с высокими достижениями стать лидерами, способными формировать '
+                            'будущее: разрабатывать и воплощать решения глобальных проблем и социальных '
+                            'вызовов. Благодаря стартовому финансированию, индивидуальным консультациям, '
+                            'междисциплинарному сотрудничеству, а также доступу к ресурсам и партнёрским '
+                            'связям университета программа помогает студентам превращать идеи в проекты с '
+                            'измеримым и значимым результатом.',
+                      'zh': 'House of Scholars '
+                            '是香港浸会大学领袖素质中心旗下的一项择优录取的领导力发展计划，旨在培养表现优秀的学生成为塑造未来的领袖，设计并实施应对全球问题和社会挑战的解决方案。通过启动资金、个性化咨询、跨学科合作，以及大学资源与合作网络，该计划支持学生将创意转化为成果可衡量且具有实际影响力的项目。'},
+ 'team_learn': {'en': 'Learn more about House of Scholars',
+                'ru': 'Подробнее о House of Scholars',
+                'zh': '了解更多关于 House of Scholars'},
+ 'team_credit': {'en': 'Created by House of Scholars with ♡',
+                 'ru': 'Создано House of Scholars с любовью ♡',
+                 'zh': '由 House of Scholars 用心打造 ♡'},
+ 'team_degree_0': {'en': 'Year 3 Business & Computer Science Student',
+                   'ru': 'Студент 3-го курса, бизнес и компьютерные науки',
+                   'zh': '工商管理与计算机科学专业三年级学生'},
+ 'team_degree_1': {'en': 'Year 4 Business Administration (Global Entertainment) Student',
+                   'ru': 'Студентка 4-го курса, управление бизнесом (глобальная индустрия развлечений)',
+                   'zh': '工商管理（环球娱乐）专业四年级学生'},
+ 'team_degree_2': {'en': 'Year 3 Biotechnology Student',
+                   'ru': 'Студентка 3-го курса, биотехнологии',
+                   'zh': '生物技术专业三年级学生'},
+ 'team_focus_0': {'en': 'AI Product Design, Software Development',
+                  'ru': 'Дизайн ИИ-продуктов, разработка программного обеспечения',
+                  'zh': '人工智能产品设计、软件开发'},
+ 'team_focus_1': {'en': 'Non-profit and Events Management in Arts and Culture',
+                  'ru': 'Управление некоммерческими организациями и мероприятиями в сфере искусства и '
+                        'культуры',
+                  'zh': '艺术与文化领域的非营利组织及活动管理'},
+ 'team_focus_2': {'en': 'Biotechnology and Consulting', 'ru': 'Биотехнологии и консалтинг', 'zh': '生物技术与咨询'}})
